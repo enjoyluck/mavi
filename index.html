@@ -62,6 +62,7 @@
         async function cargarCatalogo() {
             try {
                 let response = await fetch(`https://enjoyluck.github.io/mavi/productos.json?nocache=${Date.now()}`);
+                let productos = await response.json(); // Corrección: ahora se obtiene el JSON correctamente
 
                 let catalogo = document.getElementById('catalogo');
                 catalogo.innerHTML = ''; // Limpiar el contenido
