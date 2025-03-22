@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Prendas</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .catalogo { display: flex; flex-wrap: wrap; justify-content: center; }
+        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; }
+        .item img { width: 100%; height: auto; }
+        .precio { font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+
+    <h1>Catálogo de Prendas</h1>
+    <div class="catalogo">
+        <div class="item">
+            <img src="URL_DE_IMAGEN_1" alt="Prenda 1">
+            <p class="precio">$25.00</p>
+        </div>
+        <div class="item">
+            <img src="URL_DE_IMAGEN_2" alt="Prenda 2">
+            <p class="precio">$30.00</p>
+        </div>
+    </div>
+
+</body>
+</html>
