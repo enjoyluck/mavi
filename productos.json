@@ -1,6 +1,6 @@
 [
-    { "imagen": "imagenes/remeras/remera1.jpg", "nombre": "Remera Negra", "precio": 5000, "categoria": "remeras" },
-    { "imagen": "imagenes/camperas/campera1.jpg", "nombre": "Campera Azul", "precio": 15000, "categoria": "camperas" },
-    { "imagen": "imagenes/pantalones/pantalon1.jpg", "nombre": "Jean Celeste", "precio": 12000, "categoria": "pantalones" },
-    { "imagen": "imagenes/calzas/calza1.jpg", "nombre": "Calza Negra", "precio": 8000, "categoria": "calzas" }
+    { "categoria": "remeras", "carpeta": "imagenes/remeras/", "precio": 5000, "nombre": "Remeras Variadas" },
+    { "categoria": "camperas", "carpeta": "imagenes/camperas/", "precio": 15000, "nombre": "Camperas Variadas" },
+    { "categoria": "pantalones", "carpeta": "imagenes/pantalones/", "precio": 12000, "nombre": "Pantalones Variados" },
+    { "categoria": "calzas", "carpeta": "imagenes/calzas/", "precio": 8000, "nombre": "Calzas Variadas" }
 ]
