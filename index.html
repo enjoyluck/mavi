@@ -67,7 +67,7 @@
             camperas: 20000,
             pantalones: 13000,
             calzas: 13000,
-            breme: 16000
+            Breme: 16000
         };
 
         // Precios especiales con descripción
@@ -80,15 +80,33 @@
 
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
+
+            // Mapeo de nombres de carpetas (GitHub distingue mayúsculas/minúsculas)
+            const categoriasReales = {
+                remeras: "remeras",
+                camperas: "camperas",
+                pantalones: "pantalones",
+                calzas: "calzas",
+                Breme: "Breme"
+            };
+
+            if (!(categoriaSeleccionada in categoriasReales)) {
+                console.error("Categoría no encontrada:", categoriaSeleccionada);
+                document.getElementById('catalogo').innerHTML = "<p>Error: Categoría no encontrada.</p>";
+                return;
+            }
+
             let catalogo = document.getElementById('catalogo');
             catalogo.innerHTML = '<p>Cargando imágenes...</p>';
 
             try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaSeleccionada}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la categoría seleccionada.");
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriasReales[categoriaSeleccionada]}`);
                 
-                let archivos = await response.json();
+                if (!response.ok) {
+                    throw new Error(`No se pudo acceder a la carpeta: ${categoriasReales[categoriaSeleccionada]}`);
+                }
 
+                let archivos = await response.json();
                 catalogo.innerHTML = ''; 
 
                 archivos.forEach(archivo => {
@@ -120,7 +138,7 @@
                 }
             } catch (error) {
                 console.error("Error cargando imágenes:", error);
-                catalogo.innerHTML = '<p>Error al cargar imágenes. Verifique la estructura del repositorio.</p>';
+                catalogo.innerHTML = `<p>Error al cargar imágenes de la categoría "${categoriaSeleccionada}".</p>`;
             }
         }
 
