@@ -14,11 +14,10 @@
             background-attachment: fixed;
         }
         .catalogo { display: flex; flex-wrap: wrap; justify-content: center; }
-        .categoria { margin-bottom: 30px; }
-        .categoria h2 { text-transform: capitalize; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px; }
-        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; background: rgba(255, 255, 255, 0.8); }
+        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; }
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
+        select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
 
         /* Estilos para el modal */
         .modal {
@@ -59,7 +58,17 @@
         <span>1127799341</span>
     </div>
 
-    <div id="catalogo"></div>
+    <!-- Filtro de categorías -->
+    <label for="categoria">Filtrar por categoría:</label>
+    <select id="categoria" onchange="cargarCatalogo()">
+        <option value="todas">Todas</option>
+        <option value="remeras">Remeras</option>
+        <option value="camperas">Camperas</option>
+        <option value="pantalones">Pantalones</option>
+        <option value="calzas">Calzas</option>
+    </select>
+
+    <div id="catalogo" class="catalogo"></div>
 
     <!-- Modal para agrandar imágenes -->
     <div id="modal" class="modal">
@@ -73,28 +82,12 @@
                 let response = await fetch(`https://enjoyluck.github.io/mavi/productos.json?nocache=${Date.now()}`);
                 let productos = await response.json();
 
+                let categoriaSeleccionada = document.getElementById("categoria").value;
                 let catalogo = document.getElementById('catalogo');
-                catalogo.innerHTML = ''; // Limpiar contenido
+                catalogo.innerHTML = ''; 
 
-                // Agrupar productos por categoría
-                let categorias = {};
                 productos.forEach(producto => {
-                    if (!categorias[producto.categoria]) {
-                        categorias[producto.categoria] = [];
-                    }
-                    categorias[producto.categoria].push(producto);
-                });
-
-                // Crear secciones por categoría
-                for (let categoria in categorias) {
-                    let seccion = document.createElement('div');
-                    seccion.classList.add('categoria');
-                    seccion.innerHTML = `<h2>${categoria}</h2>`;
-                    
-                    let contenedor = document.createElement('div');
-                    contenedor.classList.add('catalogo');
-
-                    categorias[categoria].forEach(producto => {
+                    if (categoriaSeleccionada === "todas" || producto.categoria === categoriaSeleccionada) {
                         let item = document.createElement('div');
                         item.classList.add('item');
                         item.innerHTML = `
@@ -102,12 +95,9 @@
                             <p>${producto.nombre}</p>
                             <p class="precio">$${producto.precio.toFixed(2)}</p>
                         `;
-                        contenedor.appendChild(item);
-                    });
-
-                    seccion.appendChild(contenedor);
-                    catalogo.appendChild(seccion);
-                }
+                        catalogo.appendChild(item);
+                    }
+                });
             } catch (error) {
                 console.error("Error cargando el catálogo:", error);
             }
