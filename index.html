@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Prendas</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-image: url('https://enjoyluck.github.io/mavi/IMG-20250322-WA0105.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
         .catalogo { display: flex; flex-wrap: wrap; justify-content: center; }
         .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; }
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
@@ -44,10 +51,10 @@
 
     <!-- Botón de WhatsApp -->
     <div class="whatsapp">
-        <a href="https://wa.me/112779-9341" target="_blank">
+        <a href="https://wa.me/1127799341" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
         </a>
-        <span>112779 9341</span>
+        <span>1127799341</span>
     </div>
 
     <div id="catalogo" class="catalogo"></div>
@@ -62,10 +69,10 @@
         async function cargarCatalogo() {
             try {
                 let response = await fetch(`https://enjoyluck.github.io/mavi/productos.json?nocache=${Date.now()}`);
-                let productos = await response.json(); // Corrección: ahora se obtiene el JSON correctamente
+                let productos = await response.json(); 
 
                 let catalogo = document.getElementById('catalogo');
-                catalogo.innerHTML = ''; // Limpiar el contenido
+                catalogo.innerHTML = ''; 
 
                 productos.forEach(producto => {
                     let item = document.createElement('div');
@@ -95,13 +102,6 @@
 
         cargarCatalogo();
     </script>
- {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-image: url('https://enjoyluck.github.io/mavi/IMG-20250322-WA0105.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
+
 </body>
 </html>
