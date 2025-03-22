@@ -1,0 +1,12 @@
+[
+    {
+        "imagen": "URL_DE_IMAGEN_1",
+        "nombre": "Camiseta Blanca",
+        "precio": 25.00
+    },
+    {
+        "imagen": "URL_DE_IMAGEN_2",
+        "nombre": "Pantalón Negro",
+        "precio": 30.00
+    }
+]
