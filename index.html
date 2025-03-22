@@ -125,14 +125,31 @@
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
 
+            // Mapeo para evitar problemas con nombres en GitHub
+            const categoriasReales = {
+                remeras: "remeras",
+                camperas: "camperas",
+                pantalones: "pantalones",
+                calzas: "calzas",
+                Bremer: "Bremer"
+            };
+
+            let categoriaReal = categoriasReales[categoriaSeleccionada];
+
+            if (!categoriaReal) {
+                console.error("Categoría no encontrada:", categoriaSeleccionada);
+                document.getElementById('catalogo').innerHTML = "<p>Error: Categoría no encontrada.</p>";
+                return;
+            }
+
             let catalogo = document.getElementById('catalogo');
             catalogo.innerHTML = '<p>Cargando imágenes...</p>';
 
             try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaSeleccionada}`);
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaReal}`);
 
                 if (!response.ok) {
-                    throw new Error(`No se pudo acceder a la carpeta: ${categoriaSeleccionada}`);
+                    throw new Error(`No se pudo acceder a la carpeta: ${categoriaReal}`);
                 }
 
                 let archivos = await response.json();
