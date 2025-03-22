@@ -1,12 +1,12 @@
 [
     {
-        "imagen": "URL_DE_IMAGEN_1",
-        "nombre": "Camiseta Blanca",
-        "precio": 25.00
+        "imagen": "https://i.imgur.com/Cyun5We.jpeg",
+        "nombre": "Frazada Polar",
+        "precio":$ 3.500.00
     },
     {
-        "imagen": "URL_DE_IMAGEN_2",
-        "nombre": "Pantalón Negro",
-        "precio": 30.00
+        "imagen": "https://i.imgur.com/9UZF4xN.jpeg",
+        "nombre": "Remera Negra",
+        "precio": 1000.00
     }
 ]
