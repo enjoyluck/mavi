@@ -1,5 +1,5 @@
 [
-    { "categoria": "remeras", "carpeta": "imagenes/remeras/", "precio": 5000, "nombre": "Remeras Variadas" },
+    { "categoria": "remeras", "carpeta": "imagenes/remeras/", "precio": 12000, "nombre": "Remeras Variadas" },
     { "categoria": "camperas", "carpeta": "imagenes/camperas/", "precio": 15000, "nombre": "Camperas Variadas" },
     { "categoria": "pantalones", "carpeta": "imagenes/pantalones/", "precio": 12000, "nombre": "Pantalones Variados" },
     { "categoria": "calzas", "carpeta": "imagenes/calzas/", "precio": 8000, "nombre": "Calzas Variadas" }
