@@ -14,7 +14,7 @@
             background-attachment: fixed;
         }
         .catalogo { display: flex; flex-wrap: wrap; justify-content: center; }
-        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; }
+        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; background: rgba(255, 255, 255, 0.8); border-radius: 5px; }
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
         select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
@@ -32,31 +32,11 @@
         }
         .modal img { max-width: 90%; max-height: 80%; border-radius: 10px; }
         .cerrar { position: absolute; top: 20px; right: 30px; font-size: 30px; color: white; cursor: pointer; }
-
-        /* Estilos para el ícono de WhatsApp */
-        .whatsapp {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .whatsapp img {
-            width: 30px;
-            margin-right: 10px;
-        }
     </style>
 </head>
 <body>
 
     <h1>Catálogo de Prendas</h1>
-
-    <!-- Botón de WhatsApp -->
-    <div class="whatsapp">
-        <a href="https://wa.me/1127799341" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-        </a>
-        <span>1127799341</span>
-    </div>
 
     <!-- Filtro de categorías -->
     <label for="categoria">Filtrar por categoría:</label>
@@ -78,7 +58,14 @@
     <script>
         const repoUsuario = "enjoyluck";
         const repoNombre = "mavi";
-        const precioFijo = 12000; // Precio fijo de cada prenda
+
+        // Precios por categoría
+        const preciosFijos = {
+            remeras: 12000,
+            camperas: 20000,
+            pantalones: 15500,
+            calzas: 13000
+        };
 
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
@@ -86,20 +73,21 @@
             catalogo.innerHTML = '<p>Cargando imágenes...</p>';
 
             try {
-                // Llamada a la API de GitHub para obtener los archivos en la carpeta de la categoría seleccionada
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/imagenes/${categoriaSeleccionada}`);
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaSeleccionada}`);
                 let archivos = await response.json();
 
-                catalogo.innerHTML = ''; // Limpiar la galería antes de mostrar nuevos elementos
+                catalogo.innerHTML = ''; 
 
                 archivos.forEach(archivo => {
                     if (archivo.type === "file" && /\.(jpg|jpeg|png)$/i.test(archivo.name)) {
+                        let precioFormateado = `$ ${preciosFijos[categoriaSeleccionada].toLocaleString('es-AR')}`;
+                        
                         let item = document.createElement('div');
                         item.classList.add('item');
                         item.innerHTML = `
                             <img src="${archivo.download_url}" alt="${categoriaSeleccionada}" onclick="abrirModal('${archivo.download_url}')">
                             <p>${categoriaSeleccionada.charAt(0).toUpperCase() + categoriaSeleccionada.slice(1)}</p>
-                            <p class="precio">$${precioFijo.toFixed(2)}</p>
+                            <p class="precio">${precioFormateado}</p>
                         `;
                         catalogo.appendChild(item);
                     }
