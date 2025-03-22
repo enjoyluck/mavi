@@ -61,7 +61,6 @@
     <!-- Filtro de categorías -->
     <label for="categoria">Filtrar por categoría:</label>
     <select id="categoria" onchange="cargarCatalogo()">
-        <option value="todas">Todas</option>
         <option value="remeras">Remeras</option>
         <option value="camperas">Camperas</option>
         <option value="pantalones">Pantalones</option>
@@ -77,44 +76,41 @@
     </div>
 
     <script>
+        const repoUsuario = "enjoyluck";
+        const repoNombre = "mavi";
+        const precioFijo = 10000; // Precio fijo de cada prenda
+
         async function cargarCatalogo() {
+            let categoriaSeleccionada = document.getElementById("categoria").value;
+            let catalogo = document.getElementById('catalogo');
+            catalogo.innerHTML = '<p>Cargando imágenes...</p>';
+
             try {
-                let response = await fetch(`https://enjoyluck.github.io/mavi/productos.json?nocache=${Date.now()}`);
-                let productos = await response.json();
-
-                let categoriaSeleccionada = document.getElementById("categoria").value;
-                let catalogo = document.getElementById('catalogo');
-                catalogo.innerHTML = ''; 
-
-                productos.forEach(producto => {
-                    if (categoriaSeleccionada === "todas" || producto.categoria === categoriaSeleccionada) {
-                        cargarImagenes(producto.carpeta, producto.nombre, producto.precio);
-                    }
-                });
-            } catch (error) {
-                console.error("Error cargando el catálogo:", error);
-            }
-        }
-
-        async function cargarImagenes(carpeta, nombre, precio) {
-            try {
-                let response = await fetch(`https://api.github.com/repos/enjoyluck/mavi/contents/${carpeta}`);
+                // Llamada a la API de GitHub para obtener los archivos en la carpeta de la categoría seleccionada
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/imagenes/${categoriaSeleccionada}`);
                 let archivos = await response.json();
+
+                catalogo.innerHTML = ''; // Limpiar la galería antes de mostrar nuevos elementos
 
                 archivos.forEach(archivo => {
                     if (archivo.type === "file" && /\.(jpg|jpeg|png)$/i.test(archivo.name)) {
                         let item = document.createElement('div');
                         item.classList.add('item');
                         item.innerHTML = `
-                            <img src="${archivo.download_url}" alt="${nombre}" onclick="abrirModal('${archivo.download_url}')">
-                            <p>${nombre}</p>
-                            <p class="precio">$${precio.toFixed(2)}</p>
+                            <img src="${archivo.download_url}" alt="${categoriaSeleccionada}" onclick="abrirModal('${archivo.download_url}')">
+                            <p>${categoriaSeleccionada.charAt(0).toUpperCase() + categoriaSeleccionada.slice(1)}</p>
+                            <p class="precio">$${precioFijo.toFixed(2)}</p>
                         `;
-                        document.getElementById('catalogo').appendChild(item);
+                        catalogo.appendChild(item);
                     }
                 });
+
+                if (catalogo.innerHTML === '') {
+                    catalogo.innerHTML = '<p>No hay imágenes disponibles en esta categoría.</p>';
+                }
             } catch (error) {
-                console.error("Error cargando imágenes de la carpeta:", error);
+                console.error("Error cargando imágenes:", error);
+                catalogo.innerHTML = '<p>Error al cargar imágenes.</p>';
             }
         }
 
@@ -129,6 +125,7 @@
             document.getElementById("modal").style.display = "none";
         }
 
+        // Cargar la categoría por defecto al iniciar
         cargarCatalogo();
     </script>
 
