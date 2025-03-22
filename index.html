@@ -17,6 +17,7 @@
         .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; background: rgba(255, 255, 255, 0.8); border-radius: 5px; }
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
+        .descripcion { font-size: 14px; color: #666; }
         select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
 
         /* Estilos para el modal */
@@ -45,7 +46,7 @@
         <option value="camperas">Camperas</option>
         <option value="pantalones">Pantalones</option>
         <option value="calzas">Calzas</option>
-        <option value="breme">breme</option>
+        <option value="breme">Breme</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -63,17 +64,19 @@
         // Precios por categoría
         const preciosFijos = {
             remeras: 12000,
-            camperas: 0000,
+            camperas: 20000,
             pantalones: 13000,
-            calzas: 13000
-            brene: 16000 
+            calzas: 13000,
+            breme: 16000
         };
+
+        // Precios especiales con descripción
         const preciosEspeciales = {
-      "camperas": {
-        "IMG-20250322-WA0129.jpg": 45000,
-        "campera_azul.jpg": 22000
-    }
-};
+            camperas: {
+                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
+                "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
+            }
+        };
 
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
@@ -81,21 +84,30 @@
             catalogo.innerHTML = '<p>Cargando imágenes...</p>';
 
             try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaSeleccionada}`);
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/imagenes/${categoriaSeleccionada}`);
                 let archivos = await response.json();
 
                 catalogo.innerHTML = ''; 
 
                 archivos.forEach(archivo => {
                     if (archivo.type === "file" && /\.(jpg|jpeg|png)$/i.test(archivo.name)) {
-                        let precioFormateado = `$ ${preciosFijos[categoriaSeleccionada].toLocaleString('es-AR')}`;
-                        
+                        let precio = preciosFijos[categoriaSeleccionada] || 0;
+                        let descripcion = "";
+
+                        if (preciosEspeciales[categoriaSeleccionada] && preciosEspeciales[categoriaSeleccionada][archivo.name]) {
+                            precio = preciosEspeciales[categoriaSeleccionada][archivo.name].precio;
+                            descripcion = preciosEspeciales[categoriaSeleccionada][archivo.name].descripcion;
+                        }
+
+                        let precioFormateado = `$ ${precio.toLocaleString('es-AR')}`;
+
                         let item = document.createElement('div');
                         item.classList.add('item');
                         item.innerHTML = `
                             <img src="${archivo.download_url}" alt="${categoriaSeleccionada}" onclick="abrirModal('${archivo.download_url}')">
                             <p>${categoriaSeleccionada.charAt(0).toUpperCase() + categoriaSeleccionada.slice(1)}</p>
                             <p class="precio">${precioFormateado}</p>
+                            <p class="descripcion">${descripcion}</p>
                         `;
                         catalogo.appendChild(item);
                     }
