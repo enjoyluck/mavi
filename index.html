@@ -14,10 +14,12 @@
             background-attachment: fixed;
         }
         .catalogo { display: flex; flex-wrap: wrap; justify-content: center; }
-        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; }
+        .categoria { margin-bottom: 30px; }
+        .categoria h2 { text-transform: capitalize; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px; }
+        .item { margin: 15px; border: 1px solid #ddd; padding: 10px; width: 200px; cursor: pointer; background: rgba(255, 255, 255, 0.8); }
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
-        
+
         /* Estilos para el modal */
         .modal {
             display: none; 
@@ -57,7 +59,7 @@
         <span>1127799341</span>
     </div>
 
-    <div id="catalogo" class="catalogo"></div>
+    <div id="catalogo"></div>
 
     <!-- Modal para agrandar imágenes -->
     <div id="modal" class="modal">
@@ -69,21 +71,43 @@
         async function cargarCatalogo() {
             try {
                 let response = await fetch(`https://enjoyluck.github.io/mavi/productos.json?nocache=${Date.now()}`);
-                let productos = await response.json(); 
+                let productos = await response.json();
 
                 let catalogo = document.getElementById('catalogo');
-                catalogo.innerHTML = ''; 
+                catalogo.innerHTML = ''; // Limpiar contenido
 
+                // Agrupar productos por categoría
+                let categorias = {};
                 productos.forEach(producto => {
-                    let item = document.createElement('div');
-                    item.classList.add('item');
-                    item.innerHTML = `
-                        <img src="${producto.imagen}" alt="${producto.nombre}" onclick="abrirModal('${producto.imagen}')">
-                        <p>${producto.nombre}</p>
-                        <p class="precio">$${producto.precio.toFixed(2)}</p>
-                    `;
-                    catalogo.appendChild(item);
+                    if (!categorias[producto.categoria]) {
+                        categorias[producto.categoria] = [];
+                    }
+                    categorias[producto.categoria].push(producto);
                 });
+
+                // Crear secciones por categoría
+                for (let categoria in categorias) {
+                    let seccion = document.createElement('div');
+                    seccion.classList.add('categoria');
+                    seccion.innerHTML = `<h2>${categoria}</h2>`;
+                    
+                    let contenedor = document.createElement('div');
+                    contenedor.classList.add('catalogo');
+
+                    categorias[categoria].forEach(producto => {
+                        let item = document.createElement('div');
+                        item.classList.add('item');
+                        item.innerHTML = `
+                            <img src="${producto.imagen}" alt="${producto.nombre}" onclick="abrirModal('${producto.imagen}')">
+                            <p>${producto.nombre}</p>
+                            <p class="precio">$${producto.precio.toFixed(2)}</p>
+                        `;
+                        contenedor.appendChild(item);
+                    });
+
+                    seccion.appendChild(contenedor);
+                    catalogo.appendChild(seccion);
+                }
             } catch (error) {
                 console.error("Error cargando el catálogo:", error);
             }
