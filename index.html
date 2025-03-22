@@ -88,18 +88,33 @@
 
                 productos.forEach(producto => {
                     if (categoriaSeleccionada === "todas" || producto.categoria === categoriaSeleccionada) {
-                        let item = document.createElement('div');
-                        item.classList.add('item');
-                        item.innerHTML = `
-                            <img src="${producto.imagen}" alt="${producto.nombre}" onclick="abrirModal('${producto.imagen}')">
-                            <p>${producto.nombre}</p>
-                            <p class="precio">$${producto.precio.toFixed(2)}</p>
-                        `;
-                        catalogo.appendChild(item);
+                        cargarImagenes(producto.carpeta, producto.nombre, producto.precio);
                     }
                 });
             } catch (error) {
                 console.error("Error cargando el catálogo:", error);
+            }
+        }
+
+        async function cargarImagenes(carpeta, nombre, precio) {
+            try {
+                let response = await fetch(`https://api.github.com/repos/enjoyluck/mavi/contents/${carpeta}`);
+                let archivos = await response.json();
+
+                archivos.forEach(archivo => {
+                    if (archivo.type === "file" && /\.(jpg|jpeg|png)$/i.test(archivo.name)) {
+                        let item = document.createElement('div');
+                        item.classList.add('item');
+                        item.innerHTML = `
+                            <img src="${archivo.download_url}" alt="${nombre}" onclick="abrirModal('${archivo.download_url}')">
+                            <p>${nombre}</p>
+                            <p class="precio">$${precio.toFixed(2)}</p>
+                        `;
+                        document.getElementById('catalogo').appendChild(item);
+                    }
+                });
+            } catch (error) {
+                console.error("Error cargando imágenes de la carpeta:", error);
             }
         }
 
