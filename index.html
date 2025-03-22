@@ -61,8 +61,7 @@
     <script>
         async function cargarCatalogo() {
             try {
-                let response = await fetch('https://enjoyluck.github.io/mavi/productos.json');
-                let productos = await response.json();
+                let response = await fetch(`https://enjoyluck.github.io/mavi/productos.json?nocache=${Date.now()}`);
 
                 let catalogo = document.getElementById('catalogo');
                 catalogo.innerHTML = ''; // Limpiar el contenido
