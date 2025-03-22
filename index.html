@@ -60,6 +60,7 @@
     <script>
         const repoUsuario = "enjoyluck";
         const repoNombre = "mavi";
+        const repoURL = `https://${repoUsuario}.github.io/${repoNombre}/imagenes/`;
 
         // Precios por categoría
         const preciosFijos = {
@@ -100,11 +101,12 @@
                         }
 
                         let precioFormateado = `$ ${precio.toLocaleString('es-AR')}`;
+                        let imageUrl = `${repoURL}${categoriaSeleccionada}/${archivo.name}`;
 
                         let item = document.createElement('div');
                         item.classList.add('item');
                         item.innerHTML = `
-                            <img src="${archivo.download_url}" alt="${categoriaSeleccionada}" onclick="abrirModal('${archivo.download_url}')">
+                            <img src="${imageUrl}" alt="${categoriaSeleccionada}" onclick="abrirModal('${imageUrl}')">
                             <p>${categoriaSeleccionada.charAt(0).toUpperCase() + categoriaSeleccionada.slice(1)}</p>
                             <p class="precio">${precioFormateado}</p>
                             <p class="descripcion">${descripcion}</p>
