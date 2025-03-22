@@ -60,7 +60,6 @@
     <script>
         const repoUsuario = "enjoyluck";
         const repoNombre = "mavi";
-        const repoURL = `https://${repoUsuario}.github.io/${repoNombre}/imagenes/`;
 
         // Precios por categoría
         const preciosFijos = {
@@ -85,7 +84,9 @@
             catalogo.innerHTML = '<p>Cargando imágenes...</p>';
 
             try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/imagenes/${categoriaSeleccionada}`);
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaSeleccionada}`);
+                if (!response.ok) throw new Error("No se pudo acceder a la categoría seleccionada.");
+                
                 let archivos = await response.json();
 
                 catalogo.innerHTML = ''; 
@@ -101,12 +102,11 @@
                         }
 
                         let precioFormateado = `$ ${precio.toLocaleString('es-AR')}`;
-                        let imageUrl = `${repoURL}${categoriaSeleccionada}/${archivo.name}`;
 
                         let item = document.createElement('div');
                         item.classList.add('item');
                         item.innerHTML = `
-                            <img src="${imageUrl}" alt="${categoriaSeleccionada}" onclick="abrirModal('${imageUrl}')">
+                            <img src="${archivo.download_url}" alt="${categoriaSeleccionada}" onclick="abrirModal('${archivo.download_url}')">
                             <p>${categoriaSeleccionada.charAt(0).toUpperCase() + categoriaSeleccionada.slice(1)}</p>
                             <p class="precio">${precioFormateado}</p>
                             <p class="descripcion">${descripcion}</p>
@@ -120,7 +120,7 @@
                 }
             } catch (error) {
                 console.error("Error cargando imágenes:", error);
-                catalogo.innerHTML = '<p>Error al cargar imágenes.</p>';
+                catalogo.innerHTML = '<p>Error al cargar imágenes. Verifique la estructura del repositorio.</p>';
             }
         }
 
