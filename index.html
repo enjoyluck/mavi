@@ -116,6 +116,51 @@
             filter: hue-rotate(190deg); /* Color azul */
         }
     </style>
+/* Estilos para el botón de WhatsApp del Vendedor (Azul) */
+.whatsapp-vendedor {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    z-index: 1000;
+}
+
+.whatsapp-vendedor img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+}
+
+/* Estilos para el botón de WhatsApp del Creador (Verde) */
+.whatsapp-creador {
+    position: fixed;
+    bottom: 90px; /* Lo subimos para que no se superponga con el otro botón */
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    z-index: 1000;
+}
+
+.whatsapp-creador img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+    filter: hue-rotate(120deg); /* Cambia el icono a verde */
+}
+<!-- Botón de WhatsApp del Vendedor (Azul) -->
+<a href="https://wa.me/5491127799341" class="whatsapp-vendedor" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedor">
+</a>
+
+<!-- Botón de WhatsApp del Creador del Sitio (Verde) -->
+<a href="https://wa.me/541159045035" class="whatsapp-creador" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
+</a>
 </head>
 <body>
 
