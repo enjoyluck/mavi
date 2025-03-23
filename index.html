@@ -35,38 +35,9 @@
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
         .descripcion { font-size: 14px; color: #666; }
+        select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
 
-        select {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #aaa;
-            border-radius: 5px;
-            background: linear-gradient(120deg, #bbb, #ddd);
-            color: black;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        select:hover {
-            background: linear-gradient(120deg, #ccc, #eee);
-        }
-
-        .volver-atras {
-            display: none;
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: black;
-            background: rgba(192, 192, 192, 0.8);
-            padding: 10px;
-            border-radius: 50%;
-            font-weight: bold;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
+        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
         .whatsapp-vendedora {
             position: fixed;
             bottom: 20px;
@@ -82,9 +53,10 @@
             border-radius: 50%;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s;
-            filter: hue-rotate(300deg);
+            filter: hue-rotate(300deg); /* Rosa */
         }
 
+        /* Información del creador */
         .creador {
             position: fixed;
             bottom: 5px;
@@ -98,18 +70,16 @@
         }
 
         .creador img {
-            width: 16px;
+            width: 16px; /* Más pequeño */
             height: 16px;
             margin-left: 5px;
-            filter: hue-rotate(50deg) brightness(1.2);
+            filter: hue-rotate(50deg) brigthness (1.2); /* Azul */
         }
     </style>
 </head>
 <body>
 
     <h1>Catálogo de Prendas</h1>
-
-    <span class="volver-atras" onclick="volverAtras()">⬅</span>
 
     <label for="categoria">Filtrar por categoría:</label>
     <select id="categoria" onchange="cargarCatalogo()">
@@ -119,15 +89,16 @@
         <option value="calzas">Calzas</option>
         <option value="Bremer">Bremer</option>
         <option value="chalecos">Chalecos</option>
-        <option value="Buzos y Camisetas">Buzos y Camisetas</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
 
+    <!-- Botón flotante de WhatsApp (Vendedora - Rosa) -->
     <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
     </a>
 
+    <!-- Sección del creador del sitio -->
     <div class="creador">
         By Martin Clerici
         <a href="https://wa.me/541159045035" target="_blank">
@@ -138,7 +109,6 @@
     <script>
         const repoUsuario = "enjoyluck";
         const repoNombre = "mavi";
-        let historialRutas = [];
 
         const preciosFijos = {
             remeras: 12000,
@@ -146,53 +116,53 @@
             pantalones: 13000,
             calzas: 13000,
             Bremer: 16000,
-            chalecos: 34000,
-            "Buzos y Camisetas": 20000
+            chalecos: 34000
         };
 
         const preciosEspeciales = {
-            camperas: { "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" } },
-            calzas: { 
-                "golfa.jpg": { precio: 14000, descripcion: "Calza Golfrada" },
-                "calza_negra.jpg": { precio: 15000, descripcion: "Calza Negra clásica" },
-                "calza_estampada.jpg": { precio: 16000, descripcion: "Calza Estampada moderna" }
+            camperas: {
+                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
+                "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
             },
-            chalecos: { "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" } },
-            "Buzos y Camisetas": {
-                "Frizza Oversize": { precio: 14000, descripcion: "Frizza Overside - Talles 3 y 5" },
-                "Buzo Darlon": { precio: 22000, descripcion: "Overside" }
+            calzas: {
+                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
+                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
+                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
+                "recta.jpg": { precio: 10500, descripcion: "Recta" },
+                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+            },
+            chalecos: {
+                "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+                "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
+                "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
             }
         };
 
-        async function cargarCatalogo(ruta = "") {
+        async function cargarCatalogo() {
             let categoria = document.getElementById("categoria").value;
             let catalogo = document.getElementById('catalogo');
-            let path = `${categoria}${ruta ? '/' + ruta : ''}`;
-
-            if (ruta) historialRutas.push(ruta);
-            document.querySelector(".volver-atras").style.display = historialRutas.length ? "block" : "none";
+            catalogo.innerHTML = '';
 
             try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${path}`);
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
                 if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
                 let archivos = await response.json();
                 catalogo.innerHTML = '';
 
                 archivos.forEach(archivo => {
-                    if (archivo.type === "dir") {
-                        catalogo.innerHTML += `<div class="item" onclick="cargarCatalogo('${archivo.name}')"><p>${archivo.name}</p></div>`;
-                    } else if (/\.(jpg|jpeg|png)$/i.test(archivo.name)) {
-                        let precio = preciosEspeciales[categoria]?.[ruta]?.precio || preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
-                        let descripcion = preciosEspeciales[categoria]?.[ruta]?.descripcion || preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
 
-                        catalogo.innerHTML += `
-                            <div class="item">
-                                <img src="${archivo.download_url}">
-                                <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                                <p class="descripcion">${descripcion}</p>
-                            </div>`;
-                    }
+                    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
+                    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+
+                    catalogo.innerHTML += `
+                        <div class="item">
+                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                            <p class="descripcion">${descripcion}</p>
+                        </div>`;
                 });
 
             } catch (error) {
@@ -201,14 +171,17 @@
             }
         }
 
-        function volverAtras() {
-            historialRutas.pop();
-            let nuevaRuta = historialRutas.length ? historialRutas[historialRutas.length - 1] : "";
-            cargarCatalogo(nuevaRuta);
+        function abrirModal(img) {
+            document.getElementById("modal").style.display = "flex";
+            document.getElementById("modalImg").src = img;
+        }
+
+        function cerrarModal() {
+            document.getElementById("modal").style.display = "none";
         }
 
         cargarCatalogo();
     </script>
 
-</body> 
+</body>
 </html>
