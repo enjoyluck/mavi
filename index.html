@@ -5,24 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Prendas</title>
     <style>
-        body::before {
-            content: "Mavi"; 
-            font-size: 100px;
-            font-weight: bold;
-            color: rgba(255, 220, 250, 0.1); 
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1; 
-            pointer-events: none;
-            user-select: none;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        body { 
-            font-family: Arial, sans-serif; 
-            text-align: center; 
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
             background-image: url('https://enjoyluck.github.io/mavi/IMG-20250322-WA0106.jpg');
             background-size: cover;
             background-position: center;
@@ -31,43 +16,26 @@
 
         h1 { color: silver; }
 
-        .catalogo { 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .item { 
-            margin: 15px; 
-            border: 1px solid #ddd; 
-            padding: 10px; 
-            width: 200px; 
-            cursor: pointer; 
-            background: rgba(255, 255, 255, 0.8); 
-            border-radius: 5px; 
+        .item {
+            margin: 15px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 200px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
         }
 
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
         .descripcion { font-size: 14px; color: #666; }
         select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
-
-        /* Modal */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0; 
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0, 0, 0, 0.8); 
-            align-items: center; 
-            justify-content: center;
-        }
-
-        .modal img { max-width: 90%; max-height: 80%; border-radius: 10px; }
-        .cerrar { position: absolute; top: 20px; right: 30px; font-size: 30px; color: white; cursor: pointer; }
 
         /* Botón flotante de WhatsApp (Vendedor - Azul) */
         .whatsapp-vendedor {
@@ -85,44 +53,26 @@
             border-radius: 50%;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s;
-            filter: hue-rotate(190deg); /* Azul */
         }
 
-        .whatsapp-vendedor img:hover { transform: scale(1.1); }
-
-        /* Botón flotante de WhatsApp (Creador - Verde) */
-        .whatsapp-creador {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            z-index: 1000;
-        }
-
-        .whatsapp-creador img {
-            width: 100%;
-            height: auto;
-            border-radius: 50%;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
-            filter: hue-rotate(120deg); /* Verde */
-        }
-
-        .whatsapp-creador img:hover { transform: scale(1.1); }
-
-        /* Sección "By Martin Clerici" */
+        /* Información del creador */
         .creador {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 192, 203, 0.8);
+            bottom: 5px;
+            left: 10px;
+            background: transparent;
             color: gold;
-            text-align: center;
             font-size: 14px;
-            padding: 5px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .creador img {
+            width: 16px; /* Más pequeño */
+            height: 16px;
+            margin-left: 5px;
+            filter: hue-rotate(190deg); /* Azul */
         }
     </style>
 </head>
@@ -142,24 +92,17 @@
 
     <div id="catalogo" class="catalogo"></div>
 
-    <div id="modal" class="modal">
-        <span class="cerrar" onclick="cerrarModal()">&times;</span>
-        <img id="modalImg">
-    </div>
-
-    <!-- Botón de WhatsApp del Vendedor (Azul) -->
+    <!-- Botón flotante de WhatsApp (VENDEDOR - Azul) -->
     <a href="https://wa.me/5491127799341" class="whatsapp-vendedor" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedor">
-    </a>
-
-    <!-- Botón de WhatsApp del Creador (Verde) -->
-    <a href="https://wa.me/541159045035" class="whatsapp-creador" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
     </a>
 
     <!-- Sección del creador del sitio -->
     <div class="creador">
         By Martin Clerici
+        <a href="https://wa.me/541159045035" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
+        </a>
     </div>
 
     <script>
@@ -172,7 +115,7 @@
             pantalones: 13000,
             calzas: 13000,
             Bremer: 16000,
-            chalecos: 34000,
+            chalecos: 34000
         };
 
         const preciosEspeciales = {
@@ -182,6 +125,10 @@
                 "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
                 "recta.jpg": { precio: 10500, descripcion: "Recta" },
                 "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+            },
+            chalecos: {
+                "chaleco-piel.jpg": { precio: 38000, descripcion: "Chaleco de piel sintética" },
+                "chaleco-jean.jpg": { precio: 36000, descripcion: "Chaleco de jean" }
             }
         };
 
@@ -195,6 +142,7 @@
                 if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
                 let archivos = await response.json();
+                catalogo.innerHTML = '';
 
                 archivos.forEach(archivo => {
                     if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
@@ -216,8 +164,14 @@
             }
         }
 
-        function abrirModal(img) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = img; }
-        function cerrarModal() { document.getElementById("modal").style.display = "none"; }
+        function abrirModal(img) {
+            document.getElementById("modal").style.display = "flex";
+            document.getElementById("modalImg").src = img;
+        }
+
+        function cerrarModal() {
+            document.getElementById("modal").style.display = "none";
+        }
 
         cargarCatalogo();
     </script>
