@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Prendas</title>
+    <style>
+        body::before {
+            content: "Mavi"; 
+            font-size: 100px;
+            font-weight: bold;
+            color: rgba(255, 220, 250, 0.1); 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1; 
+            pointer-events: none;
+            user-select: none;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-image: url('https://enjoyluck.github.io/mavi/IMG-20250322-WA0106.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        h1 { color: silver; }
+
+        .catalogo { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+
+        .item { 
+            margin: 15px; 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            width: 200px; 
+            cursor: pointer; 
+            background: rgba(255, 255, 255, 0.8); 
+            border-radius: 5px; 
+        }
+
+        .item img { width: 100%; height: auto; transition: transform 0.2s; }
+        .precio { font-weight: bold; color: #333; }
+        .descripcion { font-size: 14px; color: #666; }
+        select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
+
+        /* Modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.8); 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .modal img { max-width: 90%; max-height: 80%; border-radius: 10px; }
+        .cerrar { position: absolute; top: 20px; right: 30px; font-size: 30px; color: white; cursor: pointer; }
+
+        /* Botón flotante de WhatsApp (Vendedor) */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .whatsapp-float img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-float img:hover { transform: scale(1.1); }
+
+        /* Sección "By Martin Clerici" */
+        .creador {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 192, 203, 0.8);
+            color: gold;
+            text-align: center;
+            font-size: 14px;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        /* Botón de WhatsApp azul (Creador del sitio) */
+        .whatsapp-creador {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .whatsapp-creador img {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            filter: hue-rotate(190deg); /* Color azul */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Catálogo de Prendas</h1>
+
+    <label for="categoria">Filtrar por categoría:</label>
+    <select id="categoria" onchange="cargarCatalogo()">
+        <option value="remeras">Remeras</option>
+        <option value="camperas">Camperas</option>
+        <option value="pantalones">Pantalones</option>
+        <option value="calzas">Calzas</option>
+        <option value="Bremer">Bremer</option>
+        <option value="chalecos">Chalecos</option>
+    </select>
+
+    <div id="catalogo" class="catalogo"></div>
+
+    <div id="modal" class="modal">
+        <span class="cerrar" onclick="cerrarModal()">&times;</span>
+        <img id="modalImg">
+    </div>
+
+    <!-- Botón flotante de WhatsApp (VENDEDOR) -->
+    <a href="https://wa.me/5491127799341" class="whatsapp-float" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
+    </a>
+
+    <!-- Sección del creador del sitio con su WhatsApp -->
+    <div class="creador">
+        By Martin Clerici  
+        <a href="https://wa.me/541159045035" class="whatsapp-creador" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
+        </a>
+    </div>
+
+    <script>
+        const repoUsuario = "enjoyluck";
+        const repoNombre = "mavi";
+
+        const preciosFijos = {
+            remeras: 12000,
+            camperas: 45000,
+            pantalones: 13000,
+            calzas: 13000,
+            Bremer: 16000,
+            chalecos: 34000,
+        };
+
+        const preciosEspeciales = {
+            calzas: {
+                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
+                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
+                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
+                "recta.jpg": { precio: 10500, descripcion: "Recta" },
+                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+            }
+        };
+
+        async function cargarCatalogo() {
+            let categoria = document.getElementById("categoria").value;
+            let catalogo = document.getElementById('catalogo');
+            catalogo.innerHTML = '';
+
+            try {
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
+                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+
+                let archivos = await response.json();
+                catalogo.innerHTML = '';
+
+                archivos.forEach(archivo => {
+                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+
+                    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
+                    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+
+                    catalogo.innerHTML += `
+                        <div class="item">
+                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                            <p class="descripcion">${descripcion}</p>
+                        </div>`;
+                });
+
+            } catch (error) {
+                console.error(error);
+                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
+            }
+        }
+
+        function abrirModal(img) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = img; }
+        function cerrarModal() { document.getElementById("modal").style.display = "none"; }
+
+        cargarCatalogo();
+    </script>
+
+</body>
+</html>
