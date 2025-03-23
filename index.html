@@ -66,7 +66,7 @@
             cursor: pointer;
         }
 
-        /* Botón flotante de WhatsApp */
+        /* Botón flotante de WhatsApp del vendedor */
         .whatsapp-vendedora {
             position: fixed;
             bottom: 20px;
@@ -133,31 +133,8 @@
     <script>
         const preciosEspeciales = {
             "Buzos y Camisetas/Buzo Overside": { precio: 22000, descripcion: "Overside" },
-            "Buzos y Camisetas/Buzo Frizza": { precio: 14000, descripcion: "Talles de 3 y 5" },
-            camperas: {
-                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
-                "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
-            },
-            calzas: {
-                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
-                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
-                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
-                "recta.jpg": { precio: 10500, descripcion: "Recta" },
-                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
-            },
-            chalecos: {
-                "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
-                "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
-            }
+            "Buzos y Camisetas/Buzo Frizza": { precio: 14000, descripcion: "Talles de 3 y 5" }
         };
-
-        function mostrarSubmenu() {
-            let categoria = document.getElementById("categoria").value;
-            document.getElementById("submenu").style.display = categoria === "buzos" ? "block" : "none";
-            if (categoria !== "buzos") cargarCatalogo(categoria);
-        }
 
         async function cargarCatalogo(categoria) {
             document.getElementById("volver").style.display = categoria.includes("Buzos y Camisetas") ? "block" : "none";
@@ -178,12 +155,29 @@
             });
         }
 
+        function mostrarSubmenu() {
+            let categoria = document.getElementById("categoria").value;
+            document.getElementById("submenu").style.display = categoria === "buzos" ? "block" : "none";
+            if (categoria !== "buzos") cargarCatalogo(categoria);
+        }
+
         function volverAtras() {
             document.getElementById("volver").style.display = "none";
             document.getElementById("catalogo").innerHTML = "";
             document.getElementById("submenu").style.display = "block";
         }
     </script>
+
+    <!-- WhatsApp del vendedor -->
+    <a href="https://wa.me/549XXXXXXXXXX" class="whatsapp-vendedora">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
+    </a>
+
+    <!-- Información del creador -->
+    <div class="creador">
+        By Martin Clerici
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
+    </div>
 
 </body>
 </html>
