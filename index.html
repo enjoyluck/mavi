@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Prendas</title>
     <style>
+    body::before {
+    content: "Mavi"; 
+    font-size: 100px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.2); /* Semi-transparente */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+}
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
