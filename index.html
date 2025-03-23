@@ -37,7 +37,36 @@
         .descripcion { font-size: 14px; color: #666; }
         select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
 
-        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
+        /* Submenú de Buzos y Camisetas */
+        .submenu {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .submenu button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: silver;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Botón para volver atrás */
+        .volver {
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Botón flotante de WhatsApp */
         .whatsapp-vendedora {
             position: fixed;
             bottom: 20px;
@@ -51,9 +80,7 @@
             width: 100%;
             height: auto;
             border-radius: 50%;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
-            filter: hue-rotate(300deg); /* Rosa */
+            filter: hue-rotate(300deg);
         }
 
         /* Información del creador */
@@ -64,16 +91,15 @@
             background: transparent;
             color: gold;
             font-size: 14px;
-            font-weight: bold;
             display: flex;
             align-items: center;
         }
 
         .creador img {
-            width: 16px; /* Más pequeño */
+            width: 16px;
             height: 16px;
             margin-left: 5px;
-            filter: hue-rotate(50deg) brigthness (1.2); /* Azul */
+            filter: hue-rotate(50deg);
         }
     </style>
 </head>
@@ -82,44 +108,32 @@
     <h1>Catálogo de Prendas</h1>
 
     <label for="categoria">Filtrar por categoría:</label>
-    <select id="categoria" onchange="cargarCatalogo()">
+    <select id="categoria" onchange="mostrarSubmenu()">
         <option value="remeras">Remeras</option>
         <option value="camperas">Camperas</option>
         <option value="pantalones">Pantalones</option>
         <option value="calzas">Calzas</option>
         <option value="Bremer">Bremer</option>
         <option value="chalecos">Chalecos</option>
+        <option value="buzos">Buzos y Camisetas</option>
     </select>
+
+    <div id="submenu" class="submenu">
+        <button onclick="cargarCatalogo('Buzos y Camisetas/Buzo Overside')">Buzo Overside</button>
+        <button onclick="cargarCatalogo('Buzos y Camisetas/Buzo Frizza')">Buzo Frizza</button>
+        <button onclick="cargarCatalogo('Buzos y Camisetas/Buzo Capucha')">Buzo Capucha</button>
+        <button onclick="cargarCatalogo('Buzos y Camisetas/Buzo Sin Capucha')">Buzo Sin Capucha</button>
+        <button onclick="cargarCatalogo('Buzos y Camisetas/Camisetas')">Camisetas</button>
+    </div>
+
+    <button id="volver" class="volver" onclick="volverAtras()">← Volver</button>
 
     <div id="catalogo" class="catalogo"></div>
 
-    <!-- Botón flotante de WhatsApp (Vendedora - Rosa) -->
-    <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
-    </a>
-
-    <!-- Sección del creador del sitio -->
-    <div class="creador">
-        By Martin Clerici
-        <a href="https://wa.me/541159045035" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
-        </a>
-    </div>
-
     <script>
-        const repoUsuario = "enjoyluck";
-        const repoNombre = "mavi";
-
-        const preciosFijos = {
-            remeras: 12000,
-            camperas: 45000,
-            pantalones: 13000,
-            calzas: 13000,
-            Bremer: 16000,
-            chalecos: 34000
-        };
-
         const preciosEspeciales = {
+            "Buzos y Camisetas/Buzo Overside": { precio: 22000, descripcion: "Overside" },
+            "Buzos y Camisetas/Buzo Frizza": { precio: 14000, descripcion: "Talles de 3 y 5" },
             camperas: {
                 "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
                 "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
@@ -139,48 +153,36 @@
             }
         };
 
-        async function cargarCatalogo() {
+        function mostrarSubmenu() {
             let categoria = document.getElementById("categoria").value;
-            let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = '';
-
-            try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
-
-                let archivos = await response.json();
-                catalogo.innerHTML = '';
-
-                archivos.forEach(archivo => {
-                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-
-                    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
-                    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
-
-                    catalogo.innerHTML += `
-                        <div class="item">
-                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                            <p class="descripcion">${descripcion}</p>
-                        </div>`;
-                });
-
-            } catch (error) {
-                console.error(error);
-                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
-            }
+            document.getElementById("submenu").style.display = categoria === "buzos" ? "block" : "none";
+            if (categoria !== "buzos") cargarCatalogo(categoria);
         }
 
-        function abrirModal(img) {
-            document.getElementById("modal").style.display = "flex";
-            document.getElementById("modalImg").src = img;
+        async function cargarCatalogo(categoria) {
+            document.getElementById("volver").style.display = categoria.includes("Buzos y Camisetas") ? "block" : "none";
+            document.getElementById("catalogo").innerHTML = "";
+
+            let response = await fetch(`https://api.github.com/repos/enjoyluck/mavi/contents/${categoria}`);
+            let archivos = await response.json();
+
+            archivos.forEach(archivo => {
+                if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+                let info = preciosEspeciales[categoria] || {};
+                document.getElementById("catalogo").innerHTML += `
+                    <div class="item">
+                        <img src="${archivo.download_url}">
+                        <p class="precio">$ ${info.precio || 12000}</p>
+                        <p class="descripcion">${info.descripcion || ""}</p>
+                    </div>`;
+            });
         }
 
-        function cerrarModal() {
-            document.getElementById("modal").style.display = "none";
+        function volverAtras() {
+            document.getElementById("volver").style.display = "none";
+            document.getElementById("catalogo").innerHTML = "";
+            document.getElementById("submenu").style.display = "block";
         }
-
-        cargarCatalogo();
     </script>
 
 </body>
