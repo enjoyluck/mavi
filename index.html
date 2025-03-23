@@ -77,9 +77,10 @@
     </style>
 </head>
 <body>
-
+<div id="boton-atras" onclick="cargarCatalogo()" style="display: none; cursor: pointer; position: fixed; left: 10px; top: 15px; font-size: 18px; color: silver; background: rgba(0, 0, 0, 0.5); padding: 5px 10px; border-radius: 5px;">
+    ◀ Atrás
+</div>
     <h1>Catálogo de Prendas</h1>
-
     <label for="categoria">Filtrar por categoría:</label>
     <select id="categoria" onchange="cargarCatalogo()">
         <option value="remeras">Remeras</option>
@@ -119,58 +120,70 @@
 
         const preciosEspeciales = {
             camperas: {
-                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" }
+                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
+                "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
             },
             calzas: {
-                "oxford.jpg": { precio: 12000, descripcion: "Oxford" }
+                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
+                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
+                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
+                "recta.jpg": { precio: 10500, descripcion: "Recta" },
+                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+            },
+            chalecos: {
+                "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+                "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
+                "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
             }
         };
 
         async function cargarCatalogo() {
-            let categoria = document.getElementById("categoria").value;
-            let catalogo = document.getElementById("catalogo");
-            catalogo.innerHTML = "";
+    let categoria = document.getElementById("categoria").value;
+    let catalogo = document.getElementById("catalogo");
+    catalogo.innerHTML = "";
 
-            if (categoria === "Buzos-Camisetas") {
-                catalogo.innerHTML = `
-                    <button onclick="cargarSubcategoria('Buzo-Darlon')">Buzo Darlon</button>
-                    <button onclick="cargarSubcategoria('Camisetas')">Camisetas</button>
-                `;
-                return;
-            }
+    document.getElementById("boton-atras").style.display = "none"; // Oculta el botón al volver
 
-            try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+    if (categoria === "Buzos-Camisetas") {
+        catalogo.innerHTML = `
+            <button onclick="cargarSubcategoria('Buzo-Darlon')">Buzo Darlon</button>
+            <button onclick="cargarSubcategoria('Buzo-Frizza')">Buzo Frizza</button>
+        `;
+        return;
+    }
 
-                let archivos = await response.json();
+    try {
+        let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
+        if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
-                archivos.forEach(archivo => {
-                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+        let archivos = await response.json();
 
-                    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
-                    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+        archivos.forEach(archivo => {
+            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
 
-                    catalogo.innerHTML += `
-                        <div class="item">
-                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                            <p class="descripcion">${descripcion}</p>
-                        </div>`;
-                });
+            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
+            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
-            } catch (error) {
-                console.error(error);
-                catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
-            }
-        }
+            catalogo.innerHTML += `
+                <div class="item">
+                    <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                    <p class="descripcion">${descripcion}</p>
+                </div>`;
+        });
+
+    } catch (error) {
+        console.error(error);
+        catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
+    }
+}
 
         async function cargarSubcategoria(subcategoria) {
             let catalogo = document.getElementById('catalogo');
             catalogo.innerHTML = catalogo.innerHTML = `
-    <button onclick="cargarCatalogo()" style="background: none; border: none; cursor: pointer;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/White_arrow_left.svg" width="40" height="40" alt="Volver atrás">
-    </button>
+    
+</style>
 `;
             try {
                 let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/Buzos-Camisetas/${subcategoria}`);
@@ -206,4 +219,4 @@
     </script>
 
 </body>
-</html>
+</html>  
