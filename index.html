@@ -87,22 +87,35 @@
             color: white; 
             cursor: pointer; 
         }
-        .whatsapp-float {
+        /* Sección del creador */
+        .creador {
+            background-color: rgba(255, 182, 193, 0.6); /* Rosa tenue */
+            color: gold;
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
             position: fixed;
-            bottom: 20px;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Botón de WhatsApp en azul */
+        .whatsapp-azul {
+            position: fixed;
+            bottom: 80px;
             right: 20px;
             width: 60px;
             height: 60px;
             z-index: 1000;
         }
-        .whatsapp-float img {
+        .whatsapp-azul img {
             width: 100%;
             height: auto;
             border-radius: 50%;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s;
         }
-        .whatsapp-float img:hover {
+        .whatsapp-azul img:hover {
             transform: scale(1.1);
         }
     </style>
@@ -128,9 +141,15 @@
         <img id="modalImg">
     </div>
 
-    <a href="https://wa.me/5491127799341" class="whatsapp-float" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
+    <!-- Botón flotante de WhatsApp en azul -->
+    <a href="https://wa.me/5491159045035" class="whatsapp-azul" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1024px-WhatsApp.svg.png" alt="WhatsApp">
     </a>
+
+    <!-- Sección del creador del sitio -->
+    <div class="creador">
+        By Martin Clerici - <a href="https://wa.me/5491159045035" style="color: gold; text-decoration: none;">WhatsApp</a>
+    </div>
 
     <script>
         const repoUsuario = "enjoyluck";
@@ -142,27 +161,7 @@
             pantalones: 13000,
             calzas: 13000,
             Bremer: 16000,
-            chalecos: 45000,
-        };
-
-        const preciosEspeciales = {
-            camperas: {
-                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
-                "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
-            },
-            calzas: {
-                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
-                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
-                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
-                "recta.jpg": { precio: 10500, descripcion: "Recta" },
-                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
-            },
-            chalecos: {
-                "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "challargo1.jpg": { precio: 45000, descripcion: "Largo - Talles S al M Solo Azul" },
-                "chalargo2.jpg": { precio: 45000, descripción: "Largo - Talles S al M Solo Azul" },
-            }
+            chalecos: 34000
         };
 
         async function cargarCatalogo() {
@@ -178,12 +177,6 @@
             };
 
             let categoriaReal = categoriasReales[categoriaSeleccionada];
-
-            if (!categoriaReal) {
-                console.error("Categoría no encontrada:", categoriaSeleccionada);
-                document.getElementById('catalogo').innerHTML = "<p>Error: Categoría no encontrada.</p>";
-                return;
-            }
 
             let catalogo = document.getElementById('catalogo');
             catalogo.innerHTML = '<p>Cargando imágenes...</p>';
@@ -201,8 +194,6 @@
                 archivos.forEach(archivo => {
                     if (archivo.type === "file" && /\.(jpg|jpeg|png)$/i.test(archivo.name)) {
                         let precio = preciosFijos[categoriaSeleccionada] || 0;
-                        let descripcion = preciosEspeciales[categoriaSeleccionada]?.[archivo.name]?.descripcion || "";
-                        precio = preciosEspeciales[categoriaSeleccionada]?.[archivo.name]?.precio || precio;
                         let precioFormateado = `$ ${precio.toLocaleString('es-AR')}`;
 
                         let item = document.createElement('div');
@@ -211,13 +202,11 @@
                             <img src="${archivo.download_url}" alt="${categoriaSeleccionada}" onclick="abrirModal('${archivo.download_url}')">
                             <p>${categoriaSeleccionada.charAt(0).toUpperCase() + categoriaSeleccionada.slice(1)}</p>
                             <p class="precio">${precioFormateado}</p>
-                            <p class="descripcion">${descripcion}</p>
                         `;
                         catalogo.appendChild(item);
                     }
                 });
             } catch (error) {
-                console.error("Error cargando imágenes:", error);
                 catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
             }
         }
