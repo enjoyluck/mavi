@@ -149,36 +149,53 @@
         };
 
         async function cargarCatalogo() {
-            let categoria = document.getElementById("categoria").value;
-            let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = '';
+    let categoria = document.getElementById("categoria").value;
+    let catalogo = document.getElementById('catalogo');
+    catalogo.innerHTML = '';
 
-            try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+    try {
+        let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
+        if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
-                let archivos = await response.json();
-                catalogo.innerHTML = '';
+        let archivos = await response.json();
+        let listaImagenes = [];
 
-                archivos.forEach(archivo => {
-                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+        for (let archivo of archivos) {
+            if (archivo.type === "dir") {
+                // Si es una subcarpeta, buscar dentro de ella
+                let subResponse = await fetch(archivo.url);
+                if (!subResponse.ok) continue;
 
-                    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
-                    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
-
-                    catalogo.innerHTML += `
-                        <div class="item">
-                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                            <p class="descripcion">${descripcion}</p>
-                        </div>`;
-                });
-
-            } catch (error) {
-                console.error(error);
-                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
+                let subArchivos = await subResponse.json();
+                listaImagenes.push(...subArchivos.filter(f => /\.(jpg|jpeg|png)$/i.test(f.name)));
+            } else if (/\.(jpg|jpeg|png)$/i.test(archivo.name)) {
+                // Si es una imagen en la carpeta principal, agregarla
+                listaImagenes.push(archivo);
             }
         }
+
+        if (listaImagenes.length === 0) {
+            catalogo.innerHTML = `<p>No hay imágenes disponibles.</p>`;
+            return;
+        }
+
+        listaImagenes.forEach(archivo => {
+            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
+            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+
+            catalogo.innerHTML += `
+                <div class="item">
+                    <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                    <p class="descripcion">${descripcion}</p>
+                </div>`;
+        });
+
+    } catch (error) {
+        console.error(error);
+        catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
+    }
+}
 
         cargarCatalogo();
     </script>
