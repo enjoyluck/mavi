@@ -153,4 +153,74 @@
     </a>
 
     <!-- Botón de WhatsApp del Creador (Verde) -->
-    <a href="https://wa.me/541159045
+    <a href="https://wa.me/541159045035" class="whatsapp-creador" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
+    </a>
+
+    <!-- Sección del creador del sitio -->
+    <div class="creador">
+        By Martin Clerici
+    </div>
+
+    <script>
+        const repoUsuario = "enjoyluck";
+        const repoNombre = "mavi";
+
+        const preciosFijos = {
+            remeras: 12000,
+            camperas: 45000,
+            pantalones: 13000,
+            calzas: 13000,
+            Bremer: 16000,
+            chalecos: 34000,
+        };
+
+        const preciosEspeciales = {
+            calzas: {
+                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
+                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
+                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
+                "recta.jpg": { precio: 10500, descripcion: "Recta" },
+                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+            }
+        };
+
+        async function cargarCatalogo() {
+            let categoria = document.getElementById("categoria").value;
+            let catalogo = document.getElementById('catalogo');
+            catalogo.innerHTML = '';
+
+            try {
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
+                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+
+                let archivos = await response.json();
+
+                archivos.forEach(archivo => {
+                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+
+                    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
+                    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+
+                    catalogo.innerHTML += `
+                        <div class="item">
+                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                            <p class="descripcion">${descripcion}</p>
+                        </div>`;
+                });
+
+            } catch (error) {
+                console.error(error);
+                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
+            }
+        }
+
+        function abrirModal(img) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = img; }
+        function cerrarModal() { document.getElementById("modal").style.display = "none"; }
+
+        cargarCatalogo();
+    </script>
+
+</body>
+</html>
