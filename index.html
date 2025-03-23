@@ -52,7 +52,6 @@
             background: linear-gradient(120deg, #ccc, #eee);
         }
 
-        /* Botón para volver atrás */
         .volver-atras {
             display: none;
             position: fixed;
@@ -68,7 +67,6 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
         .whatsapp-vendedora {
             position: fixed;
             bottom: 20px;
@@ -87,7 +85,6 @@
             filter: hue-rotate(300deg);
         }
 
-        /* Información del creador */
         .creador {
             position: fixed;
             bottom: 5px;
@@ -127,12 +124,10 @@
 
     <div id="catalogo" class="catalogo"></div>
 
-    <!-- Botón flotante de WhatsApp (Vendedora - Rosa) -->
     <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
     </a>
 
-    <!-- Sección del creador del sitio -->
     <div class="creador">
         By Martin Clerici
         <a href="https://wa.me/541159045035" target="_blank">
@@ -156,13 +151,17 @@
         };
 
         const preciosEspeciales = {
-    camperas: { "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" } },
-    calzas: { "golfa.jpg": { precio: 14000, descripcion: "Golfrada" } },
-    chalecos: { "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" } },
-    "Buzos y Camisetas": {
-        "Frizza Oversize": { precio: 14000, descripcion: "Frizza Overside - Talles 3 y 5" },
-        "Buzo Darlon": { precio: 22000, descripcion: "Overside" }
-    }
+            camperas: { "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" } },
+            calzas: { 
+                "golfa.jpg": { precio: 14000, descripcion: "Calza Golfrada" },
+                "calza_negra.jpg": { precio: 15000, descripcion: "Calza Negra clásica" },
+                "calza_estampada.jpg": { precio: 16000, descripcion: "Calza Estampada moderna" }
+            },
+            chalecos: { "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" } },
+            "Buzos y Camisetas": {
+                "Frizza Oversize": { precio: 14000, descripcion: "Frizza Overside - Talles 3 y 5" },
+                "Buzo Darlon": { precio: 22000, descripcion: "Overside" }
+            }
         };
 
         async function cargarCatalogo(ruta = "") {
@@ -170,7 +169,7 @@
             let catalogo = document.getElementById('catalogo');
             let path = `${categoria}${ruta ? '/' + ruta : ''}`;
 
-            if (ruta) historialRutas.push(path);
+            if (ruta) historialRutas.push(ruta);
             document.querySelector(".volver-atras").style.display = historialRutas.length ? "block" : "none";
 
             try {
@@ -184,8 +183,8 @@
                     if (archivo.type === "dir") {
                         catalogo.innerHTML += `<div class="item" onclick="cargarCatalogo('${archivo.name}')"><p>${archivo.name}</p></div>`;
                     } else if (/\.(jpg|jpeg|png)$/i.test(archivo.name)) {
-                        let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
-                        let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+                        let precio = preciosEspeciales[categoria]?.[ruta]?.precio || preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
+                        let descripcion = preciosEspeciales[categoria]?.[ruta]?.descripcion || preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
                         catalogo.innerHTML += `
                             <div class="item">
