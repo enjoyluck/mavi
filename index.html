@@ -13,12 +13,15 @@
             background-position: center;
             background-attachment: fixed;
         }
+
         h1 { color: silver; }
+
         .catalogo {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .item {
             margin: 15px;
             border: 1px solid #ddd;
@@ -28,10 +31,50 @@
             background: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
         }
+
         .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
         .descripcion { font-size: 14px; color: #666; }
         select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
+
+        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
+        .whatsapp-vendedora {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .whatsapp-vendedora img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+            filter: hue-rotate(300deg); /* Rosa */
+        }
+
+        /* Información del creador */
+        .creador {
+            position: fixed;
+            bottom: 5px;
+            left: 10px;
+            background: transparent;
+            color: gold;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .creador img {
+            width: 16px; /* Más pequeño */
+            height: 16px;
+            margin-left: 5px;
+            filter: hue-rotate(50deg) brigthness (1.2); /* Azul */
+        }
     </style>
 </head>
 <body>
@@ -50,6 +93,19 @@
     </select>
 
     <div id="catalogo" class="catalogo"></div>
+
+    <!-- Botón flotante de WhatsApp (Vendedora - Rosa) -->
+    <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
+    </a>
+
+    <!-- Sección del creador del sitio -->
+    <div class="creador">
+        By Martin Clerici
+        <a href="https://wa.me/541159045035" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
+        </a>
+    </div>
 
     <script>
         const repoUsuario = "enjoyluck";
@@ -83,90 +139,49 @@
                 "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
             }
         };
+async function cargarSubcategoria(subcategoria) {
+    let catalogo = document.getElementById('catalogo');
+    catalogo.innerHTML = `
+        <button onclick="cargarCatalogo()" style="margin-bottom: 20px;">⬅ Volver atrás</button>
+    `;
 
-        async function cargarCatalogo() {
-            let categoria = document.getElementById('categoria').value;
-            let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = "";
+    try {
+        let response = await fetch(`https://api.github.com/repos/enjoyluck/mavi/contents/buzos-camisetas/${subcategoria}`);
+        if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
-            if (categoria === "Buzos-Camisetas") {
-                catalogo.innerHTML = `
-                    <button onclick="cargarSubcategoria('Buzo-Darlon')">Buzo Darlon</button>
-                    <button onclick="cargarSubcategoria('Buzo-Frizza')">Buzo Frizza</button>
-                `;
-                return;
-            }
+        let archivos = await response.json();
 
-            try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
-
-                let archivos = await response.json();
-                if (archivos.length === 0) {
-                    catalogo.innerHTML = `<p>No hay imágenes en esta categoría.</p>`;
-                    return;
-                }
-
-                archivos.forEach(archivo => {
-                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-
-                    let precio = preciosFijos[categoria] || 0;
-                    let descripcion = "";
-
-                    if (preciosEspeciales[categoria] && preciosEspeciales[categoria][archivo.name]) {
-                        precio = preciosEspeciales[categoria][archivo.name].precio;
-                        descripcion = preciosEspeciales[categoria][archivo.name].descripcion;
-                    }
-
-                    catalogo.innerHTML += `
-                        <div class="item">
-                            <img src="${archivo.download_url}">
-                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                            <p class="descripcion">${descripcion}</p>
-                        </div>`;
-                });
-
-            } catch (error) {
-                console.error(error);
-                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
-            }
+        if (archivos.length === 0) {
+            catalogo.innerHTML += `<p>No hay imágenes en esta categoría.</p>`;
+            return;
         }
 
-        async function cargarSubcategoria(subcategoria) {
-            let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = `
-                <button onclick="cargarCatalogo()">⬅ Volver atrás</button>
-            `;
+        archivos.forEach(archivo => {
+            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
 
-            try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/buzos-camisetas/${subcategoria}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+            let precio = (subcategoria === "Buzo-Darlon") ? 22000 : 14000;
+            let descripcion = (subcategoria === "Buzo-Darlon") ? "Overside" : "Talle 3 y 5";
 
-                let archivos = await response.json();
+            catalogo.innerHTML += `
+                <div class="item">
+                    <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                    <p class="descripcion">${descripcion}</p>
+                </div>`;
+        });
 
-                if (archivos.length === 0) {
-                    catalogo.innerHTML += `<p>No hay imágenes en esta categoría.</p>`;
-                    return;
-                }
+    } catch (error) {
+        console.error(error);
+        catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
+    }
+}
+        function abrirModal(img) {
+            document.getElementById("modal").style.display = "flex";
+            document.getElementById("modalImg").src = img;
+        }
 
-                archivos.forEach(archivo => {
-                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-
-                    let precio = (subcategoria === "Buzo-Darlon") ? 22000 : 14000;
-                    let descripcion = (subcategoria === "Buzo-Darlon") ? "Overside" : "Talle 3 y 5";
-
-                    catalogo.innerHTML += `
-                        <div class="item">
-                            <img src="${archivo.download_url}">
-                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                            <p class="descripcion">${descripcion}</p>
-                        </div>`;
-                });
-
-            } catch (error) {
-                console.error(error);
-                catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
-            }
+        function cerrarModal() {
+            document.getElementById("modal").style.display = "none";
         }
 
         cargarCatalogo();
