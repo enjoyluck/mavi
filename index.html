@@ -53,6 +53,8 @@
         <option value="Buzos y Camisetas">Buzos y Camisetas</option>
     </select>
 
+    <select id="subcategoria" style="display: none;" onchange="cargarSubcategoria()"></select>
+
     <div id="catalogo" class="catalogo"></div>
 
     <script>
@@ -86,28 +88,34 @@
                 "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
                 "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
                 "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
-            },
-            "Buzos y Camisetas": {
-                "frizza-overside.jpg": { precio: 14000, descripcion: "Frizza Overside - Talles 1 y 3" },
-                "buzo-darlon.jpg": { precio: 22000, descripcion: "Buzo Darlon - Oversize" },
-                "buzo-capucha.jpg": { precio: 25000, descripcion: "Buzo con capucha - Talle M" },
-                "buzo-sin-capucha.jpg": { precio: 23000, descripcion: "Buzo sin capucha - Talle M" },
-                "camiseta.jpg": { precio: 18000, descripcion: "Camiseta - Talles S al XL" }
             }
         };
 
         async function cargarCatalogo() {
             let categoria = document.getElementById("categoria").value;
-            let categoriaURL = encodeURIComponent(categoria);  // Corrige el problema con espacios
             let catalogo = document.getElementById('catalogo');
+            let subcategoriaSelect = document.getElementById("subcategoria");
+
             catalogo.innerHTML = '';
+            subcategoriaSelect.style.display = "none";
+            subcategoriaSelect.innerHTML = '';
 
             try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoriaURL}`);
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${encodeURIComponent(categoria)}`);
                 if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
                 let archivos = await response.json();
+                let carpetas = archivos.filter(archivo => archivo.type === "dir");
                 let listaImagenes = archivos.filter(archivo => /\.(jpg|jpeg|png)$/i.test(archivo.name));
+
+                if (categoria === "Buzos y Camisetas" && carpetas.length > 0) {
+                    subcategoriaSelect.style.display = "inline-block";
+                    subcategoriaSelect.innerHTML = `<option value="">Seleccione una subcategoría</option>`;
+                    carpetas.forEach(carpeta => {
+                        subcategoriaSelect.innerHTML += `<option value="${carpeta.name}">${carpeta.name}</option>`;
+                    });
+                    return;
+                }
 
                 if (listaImagenes.length === 0) {
                     catalogo.innerHTML = `<p>No hay imágenes disponibles.</p>`;
@@ -123,6 +131,40 @@
                             <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
                             <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
                             <p class="descripcion">${descripcion}</p>
+                        </div>`;
+                });
+
+            } catch (error) {
+                console.error(error);
+                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
+            }
+        }
+
+        async function cargarSubcategoria() {
+            let categoria = document.getElementById("categoria").value;
+            let subcategoria = document.getElementById("subcategoria").value;
+            let catalogo = document.getElementById('catalogo');
+
+            if (!subcategoria) return;
+
+            catalogo.innerHTML = '';
+
+            try {
+                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${encodeURIComponent(categoria)}/${encodeURIComponent(subcategoria)}`);
+                if (!response.ok) throw new Error("No se pudo acceder a la subcarpeta.");
+
+                let archivos = await response.json();
+                let listaImagenes = archivos.filter(archivo => /\.(jpg|jpeg|png)$/i.test(archivo.name));
+
+                if (listaImagenes.length === 0) {
+                    catalogo.innerHTML = `<p>No hay imágenes disponibles.</p>`;
+                    return;
+                }
+
+                listaImagenes.forEach(archivo => {
+                    catalogo.innerHTML += `
+                        <div class="item">
+                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
                         </div>`;
                 });
 
