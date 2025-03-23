@@ -105,118 +105,117 @@
         </a>
     </div>
 
-    <script>
-        const repoUsuario = "enjoyluck";
-        const repoNombre = "mavi";
 
-        const preciosFijos = {
-            remeras: 12000,
-            camperas: 45000,
-            pantalones: 13000,
-            calzas: 13000,
-            Bremer: 16000,
-            chalecos: 34000
-        };
+</body><script>
+    const repoUsuario = "enjoyluck";
+    const repoNombre = "mavi";
 
-        const preciosEspeciales = {
-            camperas: {
-                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
-                "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
-            },
-            calzas: {
-                "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
-                "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
-                "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
-                "recta.jpg": { precio: 10500, descripcion: "Recta" },
-                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
-            },
-            chalecos: {
-                "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
-                "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
-            }
-        };
+    const preciosFijos = {
+        remeras: 12000,
+        camperas: 45000,
+        pantalones: 13000,
+        calzas: 13000,
+        Bremer: 16000,
+        chalecos: 34000
+    };
 
-        async function cargarCatalogo() {
-    let categoria = document.getElementById("categoria").value;
-    let catalogo = document.getElementById("catalogo");
-    catalogo.innerHTML = "";
+    const preciosEspeciales = {
+        camperas: {
+            "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
+            "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
+        },
+        calzas: {
+            "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
+            "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
+            "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
+            "recta.jpg": { precio: 10500, descripcion: "Recta" },
+            "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+        },
+        chalecos: {
+            "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+            "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+            "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
+            "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
+        }
+    };
 
-    document.getElementById("boton-atras").style.display = "none"; // Oculta el botón al volver
+    async function cargarCatalogo() {
+        let categoria = document.getElementById("categoria").value;
+        let catalogo = document.getElementById("catalogo");
+        catalogo.innerHTML = "";
 
-    if (categoria === "Buzos-Camisetas") {
-        catalogo.innerHTML = `
-            <button onclick="cargarSubcategoria('Buzo-Darlon')">Buzo Darlon</button>
-            <button onclick="cargarSubcategoria('Buzo-Frizza')">Buzo Frizza</button>
-        `;
-        return;
-    }
+        document.getElementById("boton-atras").style.display = "none"; // Oculta el botón al volver al catálogo principal
 
-    try {
-        let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
-        if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
-
-        let archivos = await response.json();
-
-        archivos.forEach(archivo => {
-            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-
-            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
-            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
-
-            catalogo.innerHTML += `
-                <div class="item">
-                    <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                    <p class="descripcion">${descripcion}</p>
-                </div>`;
-        });
-
-    } catch (error) {
-        console.error(error);
-        catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
-    }
-}
-
-        async function cargarSubcategoria(subcategoria) {
-            let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = catalogo.innerHTML = `
-    
-</style>
-`;
-            try {
-                let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/Buzos-Camisetas/${subcategoria}`);
-                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
-
-                let archivos = await response.json();
-
-                archivos.forEach(archivo => {
-                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-
-                    let precio = (subcategoria === "Buzo-Darlon") ? 22000 : 15000;
-                    let descripcion = (subcategoria === "Buzo-Darlon") ? "Overside" : "Talle 3 y 5";
-
-                    catalogo.innerHTML += `
-                        <div class="item">
-                            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-                            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                            <p class="descripcion">${descripcion}</p>
-                        </div>`;
-                });
-
-            } catch (error) {
-                console.error(error);
-                catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
-            }
+        if (categoria === "Buzos-Camisetas") {
+            catalogo.innerHTML = `
+                <button onclick="cargarSubcategoria('Buzo-Darlon')">Buzo Darlon</button>
+                <button onclick="cargarSubcategoria('Buzo-Frizza')">Buzo Frizza</button>
+            `;
+            return;
         }
 
-        function abrirModal(img) {
-            window.open(img, "_blank");
+        try {
+            let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
+            if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+
+            let archivos = await response.json();
+
+            archivos.forEach(archivo => {
+                if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+
+                let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
+                let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+
+                catalogo.innerHTML += `
+                    <div class="item">
+                        <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                        <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                        <p class="descripcion">${descripcion}</p>
+                    </div>`;
+            });
+
+        } catch (error) {
+            console.error(error);
+            catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
         }
+    }
 
-        cargarCatalogo();
-    </script>
+    async function cargarSubcategoria(subcategoria) {
+        let catalogo = document.getElementById('catalogo');
+        catalogo.innerHTML = "";
 
-</body>
-</html>  
+        document.getElementById("boton-atras").style.display = "block"; // Muestra el botón "Atrás" al entrar a la subcategoría
+
+        try {
+            let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/Buzos-Camisetas/${subcategoria}`);
+            if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+
+            let archivos = await response.json();
+
+            archivos.forEach(archivo => {
+                if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+
+                let precio = (subcategoria === "Buzo-Darlon") ? 22000 : 14000;
+                let descripcion = (subcategoria === "Buzo-Darlon") ? "Overside" : "Talle 3 y 5";
+
+                catalogo.innerHTML += `
+                    <div class="item">
+                        <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+                        <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                        <p class="descripcion">${descripcion}</p>
+                    </div>`;
+            });
+
+        } catch (error) {
+            console.error(error);
+            catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
+        }
+    }
+
+    function abrirModal(img) {
+        window.open(img, "_blank");
+    }
+
+    cargarCatalogo();
+</script>
+</html>   
