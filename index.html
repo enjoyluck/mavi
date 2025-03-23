@@ -36,45 +36,6 @@
         .precio { font-weight: bold; color: #333; }
         .descripcion { font-size: 14px; color: #666; }
         select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
-
-        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
-        .whatsapp-vendedora {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            z-index: 1000;
-        }
-
-        .whatsapp-vendedora img {
-            width: 100%;
-            height: auto;
-            border-radius: 50%;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
-            filter: hue-rotate(300deg); /* Rosa */
-        }
-
-        /* Información del creador */
-        .creador {
-            position: fixed;
-            bottom: 5px;
-            left: 10px;
-            background: transparent;
-            color: gold;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-
-        .creador img {
-            width: 16px; 
-            height: 16px;
-            margin-left: 5px;
-            filter: hue-rotate(50deg);
-        }
     </style>
 </head>
 <body>
@@ -93,19 +54,6 @@
     </select>
 
     <div id="catalogo" class="catalogo"></div>
-
-    <!-- Botón flotante de WhatsApp (Vendedora - Rosa) -->
-    <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
-    </a>
-
-    <!-- Sección del creador del sitio -->
-    <div class="creador">
-        By Martin Clerici
-        <a href="https://wa.me/541159045035" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
-        </a>
-    </div>
 
     <script>
         const repoUsuario = "enjoyluck";
@@ -150,7 +98,7 @@
 
         async function cargarCatalogo() {
             let categoria = document.getElementById("categoria").value;
-            let categoriaURL = encodeURIComponent(categoria);
+            let categoriaURL = encodeURIComponent(categoria);  // Corrige el problema con espacios
             let catalogo = document.getElementById('catalogo');
             catalogo.innerHTML = '';
 
