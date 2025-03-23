@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Prendas</title>
     <style>
-        /* Marca de agua */
         body::before {
             content: "Mavi"; 
             font-size: 100px;
@@ -48,20 +47,10 @@
             border-radius: 5px; 
         }
 
-        .item img { 
-            width: 100%; 
-            height: auto; 
-            transition: transform 0.2s; 
-        }
-
+        .item img { width: 100%; height: auto; transition: transform 0.2s; }
         .precio { font-weight: bold; color: #333; }
         .descripcion { font-size: 14px; color: #666; }
-
-        select { 
-            margin-bottom: 20px; 
-            padding: 10px; 
-            font-size: 16px; 
-        }
+        select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
 
         /* Modal */
         .modal {
@@ -77,20 +66,8 @@
             justify-content: center;
         }
 
-        .modal img { 
-            max-width: 90%; 
-            max-height: 80%; 
-            border-radius: 10px; 
-        }
-
-        .cerrar { 
-            position: absolute; 
-            top: 20px; 
-            right: 30px; 
-            font-size: 30px; 
-            color: white; 
-            cursor: pointer; 
-        }
+        .modal img { max-width: 90%; max-height: 80%; border-radius: 10px; }
+        .cerrar { position: absolute; top: 20px; right: 30px; font-size: 30px; color: white; cursor: pointer; }
 
         /* Botón flotante de WhatsApp (Vendedor) */
         .whatsapp-float {
@@ -110,9 +87,7 @@
             transition: transform 0.3s;
         }
 
-        .whatsapp-float img:hover {
-            transform: scale(1.1);
-        }
+        .whatsapp-float img:hover { transform: scale(1.1); }
 
         /* Sección "By Martin Clerici" */
         .creador {
@@ -138,6 +113,7 @@
             width: 20px;
             height: 20px;
             vertical-align: middle;
+            filter: hue-rotate(190deg); /* Color azul */
         }
     </style>
 </head>
@@ -171,7 +147,7 @@
     <div class="creador">
         By Martin Clerici  
         <a href="https://wa.me/541159045035" class="whatsapp-creador" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
         </a>
     </div>
 
@@ -189,9 +165,6 @@
         };
 
         const preciosEspeciales = {
-            camperas: {
-                "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
-            },
             calzas: {
                 "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
                 "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
@@ -204,15 +177,18 @@
         async function cargarCatalogo() {
             let categoria = document.getElementById("categoria").value;
             let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = '<p>Cargando imágenes...</p>';
+            catalogo.innerHTML = '';
 
             try {
                 let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
-                if (!response.ok) throw new Error(`No se pudo acceder a la carpeta: ${categoria}`);
+                if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+
                 let archivos = await response.json();
                 catalogo.innerHTML = '';
 
                 archivos.forEach(archivo => {
+                    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+
                     let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria];
                     let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
@@ -223,7 +199,11 @@
                             <p class="descripcion">${descripcion}</p>
                         </div>`;
                 });
-            } catch (error) { console.error(error); }
+
+            } catch (error) {
+                console.error(error);
+                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
+            }
         }
 
         function abrirModal(img) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = img; }
