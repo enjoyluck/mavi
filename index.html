@@ -167,8 +167,11 @@
 
         async function cargarSubcategoria(subcategoria) {
             let catalogo = document.getElementById('catalogo');
-            catalogo.innerHTML = `<button onclick="cargarCatalogo()">⬅ Volver atrás</button>`;
-
+            catalogo.innerHTML = catalogo.innerHTML = `
+    <button onclick="cargarCatalogo()" style="background: none; border: none; cursor: pointer;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/White_arrow_left.svg" width="40" height="40" alt="Volver atrás">
+    </button>
+`;
             try {
                 let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/Buzos-Camisetas/${subcategoria}`);
                 if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
