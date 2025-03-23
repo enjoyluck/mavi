@@ -70,10 +70,10 @@
         }
 
         .creador img {
-            width: 16px; /* Más pequeño */
+            width: 16px; 
             height: 16px;
             margin-left: 5px;
-            filter: hue-rotate(50deg) brigthness (1.2); /* Azul */
+            filter: hue-rotate(50deg);
         }
     </style>
 </head>
@@ -89,6 +89,7 @@
         <option value="calzas">Calzas</option>
         <option value="Bremer">Bremer</option>
         <option value="chalecos">Chalecos</option>
+        <option value="buzos-y-camisetas">Buzos y Camisetas</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -116,7 +117,8 @@
             pantalones: 13000,
             calzas: 13000,
             Bremer: 16000,
-            chalecos: 34000
+            chalecos: 34000,
+            "buzos-y-camisetas": 20000 // Precio base para buzos y camisetas
         };
 
         const preciosEspeciales = {
@@ -136,6 +138,13 @@
                 "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
                 "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
                 "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
+            },
+            "buzos-y-camisetas": {
+                "frizza-overside.jpg": { precio: 14000, descripcion: "Frizza Overside - Talles 1 y 3" },
+                "buzo-darlon.jpg": { precio: 22000, descripcion: "Buzo Darlon - Oversize" },
+                "buzo-capucha.jpg": { precio: 25000, descripcion: "Buzo con capucha - Talle M" },
+                "buzo-sin-capucha.jpg": { precio: 23000, descripcion: "Buzo sin capucha - Talle M" },
+                "camiseta.jpg": { precio: 18000, descripcion: "Camiseta - Talles S al XL" }
             }
         };
 
@@ -169,15 +178,6 @@
                 console.error(error);
                 catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
             }
-        }
-
-        function abrirModal(img) {
-            document.getElementById("modal").style.display = "flex";
-            document.getElementById("modalImg").src = img;
-        }
-
-        function cerrarModal() {
-            document.getElementById("modal").style.display = "none";
         }
 
         cargarCatalogo();
