@@ -1,4 +1,4 @@
-2<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -9,12 +9,12 @@
     content: "Mavi"; 
     font-size: 100px;
     font-weight: bold;
-    color: rgba(255, 220, 250, 0.1); /* Rosa muy claro y más transparente */
+    color: rgba(255, 220, 250, 0.1); 
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1; /* Se verá sobre el fondo */
+    z-index: 1; 
     pointer-events: none;
     user-select: none;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
@@ -91,6 +91,28 @@
             color: white; 
             cursor: pointer; 
         }
+
+        /* Botón de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .whatsapp-float img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-float img:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -115,6 +137,11 @@
         <img id="modalImg">
     </div>
 
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/112779-9341" class="whatsapp-float" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
+    </a>
+
     <script>
         const repoUsuario = "enjoyluck";
         const repoNombre = "mavi";
@@ -134,16 +161,15 @@
                 "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
                 "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
             },
-              calzas: {
+            calzas: {
                 "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
                 "golfa.jpg": { precio: 14000, descripcion: "Golfrada" }
-}
+            }
         };
 
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
 
-            // Mapeo para evitar problemas con nombres en GitHub
             const categoriasReales = {
                 remeras: "remeras",
                 camperas: "camperas",
@@ -207,19 +233,16 @@
         }
 
         function abrirModal(imagenSrc) {
-            let modal = document.getElementById("modal");
-            let modalImg = document.getElementById("modalImg");
-            modal.style.display = "flex";
-            modalImg.src = imagenSrc;
+            document.getElementById("modal").style.display = "flex";
+            document.getElementById("modalImg").src = imagenSrc;
         }
 
         function cerrarModal() {
             document.getElementById("modal").style.display = "none";
         }
 
-        // Cargar la categoría por defecto al iniciar
         cargarCatalogo();
     </script>
 
 </body>
-</html>
+    </html>
