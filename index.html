@@ -143,16 +143,28 @@
             let response = await fetch(`https://api.github.com/repos/enjoyluck/mavi/contents/${categoria}`);
             let archivos = await response.json();
 
-            archivos.forEach(archivo => {
-                if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-                let info = preciosEspeciales[categoria] || {};
-                document.getElementById("catalogo").innerHTML += `
-                    <div class="item">
-                        <img src="${archivo.download_url}">
-                        <p class="precio">$ ${info.precio || 12000}</p>
-                        <p class="descripcion">${info.descripcion || ""}</p>
-                    </div>`;
+            archivos.forEach(async archivo => {
+                if (archivo.type === "dir") {
+                    let subResponse = await fetch(archivo.url);
+                    let subArchivos = await subResponse.json();
+                    subArchivos.forEach(subArchivo => {
+                        if (!/\.(jpg|jpeg|png)$/i.test(subArchivo.name)) return;
+                        mostrarImagen(subArchivo.download_url, categoria);
+                    });
+                } else if (/\.(jpg|jpeg|png)$/i.test(archivo.name)) {
+                    mostrarImagen(archivo.download_url, categoria);
+                }
             });
+        }
+
+        function mostrarImagen(url, categoria) {
+            let info = preciosEspeciales[categoria] || {};
+            document.getElementById("catalogo").innerHTML += `
+                <div class="item">
+                    <img src="${url}">
+                    <p class="precio">$ ${info.precio || 12000}</p>
+                    <p class="descripcion">${info.descripcion || ""}</p>
+                </div>`;
         }
 
         function mostrarSubmenu() {
