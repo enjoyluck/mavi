@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Prendas</title>
     <style>
-    body::before {
-    content: "Mavi"; 
-    font-size: 100px;
-    font-weight: bold;
-    color: rgba(255, 220, 250, 0.1); 
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1; 
-    pointer-events: none;
-    user-select: none;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-}
+        body::before {
+            content: "Mavi"; 
+            font-size: 100px;
+            font-weight: bold;
+            color: rgba(255, 220, 250, 0.1); 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1; 
+            pointer-events: none;
+            user-select: none;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
@@ -27,11 +27,9 @@
             background-position: center;
             background-attachment: fixed;
         }
-
         h1 {
             color: silver; 
         }
-
         .catalogo { 
             display: flex; 
             flex-wrap: wrap; 
@@ -64,8 +62,6 @@
             padding: 10px; 
             font-size: 16px; 
         }
-
-        /* Estilos para el modal */
         .modal {
             display: none; 
             position: fixed; 
@@ -91,8 +87,6 @@
             color: white; 
             cursor: pointer; 
         }
-
-        /* Botón de WhatsApp */
         .whatsapp-float {
             position: fixed;
             bottom: 20px;
@@ -101,7 +95,6 @@
             height: 60px;
             z-index: 1000;
         }
-
         .whatsapp-float img {
             width: 100%;
             height: auto;
@@ -109,7 +102,6 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s;
         }
-
         .whatsapp-float img:hover {
             transform: scale(1.1);
         }
@@ -119,7 +111,6 @@
 
     <h1>Catálogo de Prendas</h1>
 
-    <!-- Filtro de categorías -->
     <label for="categoria">Filtrar por categoría:</label>
     <select id="categoria" onchange="cargarCatalogo()">
         <option value="remeras">Remeras</option>
@@ -132,13 +123,11 @@
 
     <div id="catalogo" class="catalogo"></div>
 
-    <!-- Modal para agrandar imágenes -->
     <div id="modal" class="modal">
         <span class="cerrar" onclick="cerrarModal()">&times;</span>
         <img id="modalImg">
     </div>
 
-    <!-- Botón flotante de WhatsApp -->
     <a href="https://wa.me/5491127799341" class="whatsapp-float" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp">
     </a>
@@ -147,17 +136,15 @@
         const repoUsuario = "enjoyluck";
         const repoNombre = "mavi";
 
-        // Precios por categoría
         const preciosFijos = {
             remeras: 12000,
             camperas: 45000,
             pantalones: 13000,
             calzas: 13000,
             Bremer: 16000,
-            chalecos: 34000,
+            chalecos: 34000
         };
 
-        // Precios especiales con descripción
         const preciosEspeciales = {
             camperas: {
                 "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
@@ -168,15 +155,13 @@
                 "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
                 "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
                 "recta.jpg": { precio: 10500, descripcion: "Recta" },
-                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" },
-        }
-        };
-               chalecos: {
+                "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" }
+            },
+            chalecos: {
                 "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-               }
-               },
-        
+                "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" }
+            }
+        };
 
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
@@ -186,7 +171,7 @@
                 camperas: "camperas",
                 pantalones: "pantalones",
                 calzas: "calzas",
-                Bremer: "Bremer"
+                Bremer: "Bremer",
                 chalecos: "chalecos"
             };
 
@@ -214,13 +199,8 @@
                 archivos.forEach(archivo => {
                     if (archivo.type === "file" && /\.(jpg|jpeg|png)$/i.test(archivo.name)) {
                         let precio = preciosFijos[categoriaSeleccionada] || 0;
-                        let descripcion = "";
-
-                        if (preciosEspeciales[categoriaSeleccionada] && preciosEspeciales[categoriaSeleccionada][archivo.name]) {
-                            precio = preciosEspeciales[categoriaSeleccionada][archivo.name].precio;
-                            descripcion = preciosEspeciales[categoriaSeleccionada][archivo.name].descripcion;
-                        }
-
+                        let descripcion = preciosEspeciales[categoriaSeleccionada]?.[archivo.name]?.descripcion || "";
+                        precio = preciosEspeciales[categoriaSeleccionada]?.[archivo.name]?.precio || precio;
                         let precioFormateado = `$ ${precio.toLocaleString('es-AR')}`;
 
                         let item = document.createElement('div');
@@ -234,13 +214,9 @@
                         catalogo.appendChild(item);
                     }
                 });
-
-                if (catalogo.innerHTML === '') {
-                    catalogo.innerHTML = '<p>No hay imágenes disponibles en esta categoría.</p>';
-                }
             } catch (error) {
                 console.error("Error cargando imágenes:", error);
-                catalogo.innerHTML = `<p>Error al cargar imágenes de la categoría "${categoriaSeleccionada}".</p>`;
+                catalogo.innerHTML = `<p>Error al cargar imágenes.</p>`;
             }
         }
 
@@ -257,4 +233,4 @@
     </script>
 
 </body>
-    </html>
+</html>
