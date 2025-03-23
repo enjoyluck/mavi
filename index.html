@@ -127,6 +127,7 @@
         <option value="pantalones">Pantalones</option>
         <option value="calzas">Calzas</option>
         <option value="Bremer">Bremer</option>
+        <option value="chalecos">Chalecos</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -153,6 +154,7 @@
             pantalones: 13000,
             calzas: 13000,
             Bremer: 16000
+            chalecos: 34000,
         };
 
         // Precios especiales con descripción
@@ -167,10 +169,12 @@
                 "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
                 "recta.jpg": { precio: 10500, descripcion: "Recta" },
                 "anticel.jpg": { precio: 10500, descripcion: "Anti ya tu sabes" },
-         
-         
-            }
+        }
         };
+               chalecos: {
+                "chal1.jpg;chal2": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+               }
+        
 
         async function cargarCatalogo() {
             let categoriaSeleccionada = document.getElementById("categoria").value;
@@ -181,6 +185,7 @@
                 pantalones: "pantalones",
                 calzas: "calzas",
                 Bremer: "Bremer"
+                chalecos: "chalecos"
             };
 
             let categoriaReal = categoriasReales[categoriaSeleccionada];
