@@ -199,7 +199,7 @@
             let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
             let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
-            catalogo.innerHTML += `
+            catalogo.innerHTML += 
                 <div class="item">
                     <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
                     <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
