@@ -137,6 +137,7 @@
         Bremer: 16000,
         chalecos: 34000,
         joggins: 15000,
+        "joggins-talle-esp":16500
     };
 
     const preciosEspeciales = {
@@ -163,10 +164,11 @@
             "jo3.jpg": { descripcion: "Talle del 1 al 5" },
             "jo4.jpg": { descripcion: "Talle del 1 al 5" }
         },
-      /*joggins-talle-esp: {
+      
+      "joggins-talle-esp": {
             "joesp1.jpg": { descripcion: "Talle 6 al 10" },
             "joesp2.jpg": { descripcion: "Talle 6 al 10" }
-        },*/
+        },
         };
       const descripcionesCategorias = {
    // joggins: "Joggins disponibles en talles del 1 al 5 Material de friza y algodón de alta calidad."
@@ -199,7 +201,7 @@
             let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
             let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
-            catalogo.innerHTML += 
+            catalogo.innerHTML += `
                 <div class="item">
                     <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
                     <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
@@ -219,4 +221,4 @@
 
     cargarCatalogo();
 </script>
-</html>   
+</html> 
