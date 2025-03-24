@@ -90,13 +90,40 @@
           /*filter: hue-rotate(260deg) saturate(100%) brightness(1.2);*/
     filter: grayscale(100%) brightness(1.3) contrast(1.2);
         }
+  /* Botón de flecha para volver atrás */
+#boton-atras {
+    display: none;
+    position: fixed;
+    left: 10px;
+    top: 15px;
+    font-size: 18px;
+    color: silver;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Botones de subcarpetas */
+.subcarpeta-btn {
+    display: block;
+    background: silver;
+    color: black;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
-<div id="boton-atras" onclick="cargarCatalogo()" style="display: none; cursor: pointer; position: fixed; left: 10px; top: 15px; font-size: 18px; color: silver; background: rgba(0, 0, 0, 0.5); padding: 5px 10px; border-radius: 5px;">
+<div id="boton-atras" onclick="volverAtras()" style="display: none; cursor: pointer; position: fixed; left: 10px; top: 15px; font-size: 18px; color: silver; background: rgba(0, 0, 0, 0.5); padding: 5px 10px; border-radius: 5px;">
     ◀ Atrás
 </div>
+</div>
     <h1>Catálogo de Prendas</h1>
+  <div id="boton-atras" onclick="cargarCatalogo('Buzos-Camisetas')">◀ Atrás</div>
     <label for="categoria">Filtrar por categoría:</label>
     <select id="categoria" onchange="cargarCatalogo()">
         <option value="remeras">Remeras</option>
@@ -178,6 +205,17 @@
     let categoria = document.getElementById("categoria").value;
     let catalogo = document.getElementById("catalogo");
     catalogo.innerHTML = "";
+      // Mostrar botón de volver atrás si estamos en una subcarpeta
+document.getElementById("boton-atras").style.display = categoria.includes("Buzo") ? "block" : "none";
+
+// Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
+if (categoria === "Buzos-Camisetas") {
+    catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
+    `;
+    return;
+}
 
     document.getElementById("boton-atras").style.display = "none"; // Oculta el botón al volver al catálogo principal
 
@@ -196,19 +234,29 @@
         let archivos = await response.json();
 
         archivos.forEach(archivo => {
-            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
 
-            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
-            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+    // Obtener precio y descripción desde preciosEspeciales o preciosFijos
+    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
+    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
-            catalogo.innerHTML += `
-                <div class="item">
-                    <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                    <p class="descripcion">${descripcion}</p>
-                </div>`;
-        });
+    // Sobrescribir precio y descripción si es una subcarpeta de Buzos-Camisetas
+    if (categoria.includes("Buzo-Darlon")) {
+        precio = 22000;
+        descripcion = "Overside";
+    } else if (categoria.includes("Buzo-Frizza")) {
+        precio = 14000;
+        descripcion = "Talle 3 y 5";
+    }
 
+    // Agregar la imagen al catálogo con su precio y descripción
+    catalogo.innerHTML += `
+        <div class="item">
+            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
+            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+            <p class="descripcion">${descripcion}</p>
+        </div>`;
+});
     } catch (error) {
         console.error(error);
         catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
