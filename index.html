@@ -51,21 +51,24 @@
     bottom: 85px; /* Ajusta la posición sobre el ícono */
     right: 30px;
     font-size: 20px;
-    color: Silver;
+    color: pink;
     font-weight: bold;
-    background: rgba(0, 0, 0, 0.3);
+    /*background: rgba(0, 0, 0, 0.3);*/
     padding: 2px 5px;
     border-radius: 5px;
 }
 
-        .whatsapp-vendedora img {
-            width: 100%;
-            height: auto;
-            border-radius: 50%;
-            box-shadow: 2px 2px 10px rgba(0, 200, 0, 0.3);
-            transition: transform 0.3s;
-            filter: hue-rotate(300deg); /* Rosa */
-        }
+    .whatsapp-vendedora img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s;
+    /* Filtro para cambiar el color a rosa */
+    /*filter: hue-rotate(160deg) saturate(500%) brightness(2.1);*/
+    filter: hue-rotate(160deg) saturate(100%) brightness(1.2);
+
+        } 
 
         /* Información del creador */
         .creador {
@@ -73,7 +76,7 @@
             bottom: 5px;
             left: 10px;
             background: transparent;
-            color: gold;
+            color:silver;
             font-size: 14px;
             font-weight: bold;
             display: flex;
@@ -84,6 +87,8 @@
             width: 16px; /* Más pequeño */
             height: 16px;
             margin-left: 5px;
+          /*filter: hue-rotate(260deg) saturate(100%) brightness(1.2);*/
+    filter: grayscale(100%) brightness(1.3) contrast(1.2);
         }
     </style>
 </head>
