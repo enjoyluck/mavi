@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -94,8 +94,8 @@
 #boton-atras {
     display: none;
     position: fixed;
-    left: 10px;
-    top: 15px;
+    leftr: 10px;
+    top: 115px;
     font-size: 18px;
     color: silver;
     background: rgba(0, 0, 0, 0.5);
@@ -236,8 +236,8 @@ async function cargarCatalogo(argumento = null) {
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
         catalogo.innerHTML = `
-            <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
-            <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Maxi')">Buzo Maxi</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Morley')">Buzo Morley</button>
       
