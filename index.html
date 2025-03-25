@@ -226,8 +226,7 @@ async function cargarCatalogo(argumento = null) {
     catalogo.innerHTML = "";
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
-    document.getElementById("boton-atras").style.display = categoria.includes("Buzos-Camisetas") ? "block" : "none";
-
+    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
         catalogo.innerHTML = `
