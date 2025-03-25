@@ -118,9 +118,7 @@
     </style>
 </head>
 <body>
-<div id="boton-atras" onclick="volverAtras()" style="display: none; cursor: pointer; position: fixed; left: 10px; top: 15px; font-size: 18px; color: silver; background: rgba(0, 0, 0, 0.5); padding: 5px 10px; border-radius: 5px;">
-    ◀ Atrás
-</div>
+
 </div>
     <h1>Catálogo de Prendas</h1>
   <div id="boton-atras" onclick="cargarCatalogo('Buzos-Camisetas')">◀ Atrás</div>
@@ -133,8 +131,8 @@
         <option value="Bremer">Bremer</option>
         <option value="chalecos">Chalecos</option>
         <option value="joggins">Joggins Babucha c/frizza</option>
-       <option value="joggins-talle-esp">Joggins Frizza Talle esp</option>
-        <option value="Buzos-Camisetas">Buzos-Camisetas</option>
+        <option value="joggins-talle-esp">Joggins Frizza Talle esp</option>
+        <option value="Buzos-Camisetas">Buzos Camisetas</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -191,82 +189,78 @@
             "jo3.jpg": { descripcion: "Talle del 1 al 5" },
             "jo4.jpg": { descripcion: "Talle del 1 al 5" }
         },
-      
+
       "joggins-talle-esp": {
             "joesp1.jpg": { descripcion: "Talle 6 al 10" },
             "joesp2.jpg": { descripcion: "Talle 6 al 10" }
         },
         };
       const descripcionesCategorias = {
-   // joggins: "Joggins disponibles en talles del 1 al 5 Material de friza y algodón de alta calidad."
+   /*joggins: "Joggins disponibles en talles del 1 al 5 Material de friza y algodón de alta calidad."*/
 
     };
-    async function cargarCatalogo() {
-    let categoria = document.getElementById("categoria").value;
+async function cargarCatalogo(argumento = null) {
+    let categoria = argumento || document.getElementById("categoria").value;
     let catalogo = document.getElementById("catalogo");
     catalogo.innerHTML = "";
-      // Mostrar botón de volver atrás si estamos en una subcarpeta
-document.getElementById("boton-atras").style.display = categoria.includes("Buzo") ? "block" : "none";
 
-// Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
-if (categoria === "Buzos-Camisetas") {
-    catalogo.innerHTML = `
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
-    `;
-    return;
-}
+    // Mostrar botón de volver atrás si estamos en una subcarpeta
+    document.getElementById("boton-atras").style.display = categoria.includes("Buzos-Camisetas") ? "block" : "none";
 
-    document.getElementById("boton-atras").style.display = "none"; // Oculta el botón al volver al catálogo principal
+    // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
+    if (categoria === "Buzos-Camisetas") {
+        catalogo.innerHTML = `
+            <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
+            <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
+        `;
+        return;
+    }
 
-    // Si la categoría tiene una descripción, la mostramos antes de las imágenes
-        //catalogo.innerHTML += `<p style="font-size: 16px; color: #555; margin-bottom: 15px;">${descripcionesCategorias[categoria]}</p>`;
-      // Si la categoría tiene una descripción, la mostramos antes de las imágenes
     if (descripcionesCategorias[categoria]) {
-    catalogo.innerHTML += `<p style="font-size: 16px; color: black; font-weight: bold; margin-bottom: 15px;">${descripcionesCategorias[categoria]}</p>`;
-
+        catalogo.innerHTML += `<p style="font-size: 16px; color: black; font-weight: bold; margin-bottom: 15px;">${descripcionesCategorias[categoria]}</p>`;
     }
 
     try {
-        let response = await fetch(`https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`);
+        let url = `https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`;
+        let response = await fetch(url);
         if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
 
         let archivos = await response.json();
-
         archivos.forEach(archivo => {
-    if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
 
-    // Obtener precio y descripción desde preciosEspeciales o preciosFijos
-    let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
-    let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
+            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
-    // Sobrescribir precio y descripción si es una subcarpeta de Buzos-Camisetas
-    if (categoria.includes("Buzo-Darlon")) {
-        precio = 22000;
-        descripcion = "Overside";
-    } else if (categoria.includes("Buzo-Frizza")) {
-        precio = 14000;
-        descripcion = "Talle 3 y 5";
-    }
+            if (categoria.includes("Buzo-Darlon")) {
+                precio = 22000;
+                descripcion = "Overside";
+            } else if (categoria.includes("Buzo-Frizza")) {
+                precio = 14000;
+                descripcion = "Talle 3 y 5";
+            }
 
-    // Agregar la imagen al catálogo con su precio y descripción
-    catalogo.innerHTML += `
-        <div class="item">
-            <img src="${archivo.download_url}" onclick="abrirModal('${archivo.download_url}')">
-            <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-            <p class="descripcion">${descripcion}</p>
-        </div>`;
-});
+            let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
+                                                 .replace("/contents/", "/main/");
+
+            catalogo.innerHTML += `
+                <div class="item">
+                    <img src="${imagenUrl}" onclick="abrirModal('${imagenUrl}')">
+                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                    <p class="descripcion">${descripcion}</p>
+                </div>`;
+        });
     } catch (error) {
         console.error(error);
         catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
     }
-    }
+}
 
-    function abrirModal(img) {
-        window.open(img, "_blank");
-    }
+function abrirModal(img) {
+    window.open(img, "_blank");
+}
 
-    cargarCatalogo();
+cargarCatalogo();
+      
 </script>
 </html> 
