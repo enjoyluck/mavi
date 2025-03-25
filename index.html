@@ -136,6 +136,7 @@
         <option value="joggins">Joggins Babucha c/frizza</option>
         <option value="joggins-talle-esp">Joggins Frizza Talle esp</option>
         <option value="Buzos-Camisetas">Buzos Camisetas</option>
+        <option value="Frazadas-Mantas">Frazadas Mantas</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -232,7 +233,7 @@ async function cargarCatalogo(argumento = null) {
     catalogo.innerHTML = "";
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
-    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Maxi") || categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
+    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
 
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
@@ -241,7 +242,14 @@ async function cargarCatalogo(argumento = null) {
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Maxi')">Buzo Maxi</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Morley')">Buzo Morley</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Camperas-Maxi')">Camperas-Maxi</button>
+        `;
+    }
+     if (categoria === "Frazadas-Mantas") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Cordero')">Manta Cordero</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Conejo')">Manta Conejo</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Plush')">Manta Plush</button>
+        
         `;
         return;
     }
@@ -270,13 +278,23 @@ async function cargarCatalogo(argumento = null) {
                 descripcion = "Talle 3 y 5";
             } else if (categoria.includes("Buzo-Maxi")) {
                 precio = 16500;
-                descripcion = "Plush";
+                descripcion = "Plus";
             } else if (categoria.includes("Buzo-Morley")) {
                 precio = 16000;
                 descripcion = "Con Capucha amplio";
             } else if (categoria.includes("Camperas-Maxi")) {
                 precio = 16000;
                 descripcion = "Talles 2 al 6";
+                //Frasadas y Mantas
+           } else if (categoria.includes("Manta-Cordero")) {
+                precio = 35000;
+                descripcion = "Lisas 25000";
+          } else if (categoria.includes("Manta-Conejo")) {
+                precio = 45000;
+                descripcion = "2 1/2";
+              } else if (categoria.includes("Manta-Plush")) {
+                precio = 14000;
+                descripcion = "2 Plazas";
             }
 
             let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
