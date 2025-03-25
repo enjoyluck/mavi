@@ -231,13 +231,16 @@ async function cargarCatalogo(argumento = null) {
     catalogo.innerHTML = "";
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
-    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
+    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Maxi") || categoria.includes("Buzo-Morley") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
 
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
         catalogo.innerHTML = `
             <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
             <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Maxi')">Buzo Maxi</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Morley')">Buzo Morley</button>
+      
         `;
         return;
     }
@@ -264,6 +267,12 @@ async function cargarCatalogo(argumento = null) {
             } else if (categoria.includes("Buzo-Frizza")) {
                 precio = 14000;
                 descripcion = "Talle 3 y 5";
+            } else if (categoria.includes("Buzo-Maxi")) {
+                precio = 16500;
+                descripcion = "Plus";
+            } else if (categoria.includes("Buzo-Morley")) {
+                precio = 16000;
+                descripcion = "Con Capucha amplio";
             }
 
             let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
