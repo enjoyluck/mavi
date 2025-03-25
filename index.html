@@ -67,7 +67,7 @@
     /* Filtro para cambiar el color a rosa */
     /*filter: hue-rotate(160deg) saturate(500%) brightness(2.1);*/
     filter: hue-rotate(160deg) saturate(100%) brightness(1.2);
- 
+
         } 
 
         /* Información del creador */
@@ -118,6 +118,7 @@
     </style>
 </head>
 <body>
+    
 
 </div>
     <h1>Catálogo de Prendas</h1>
@@ -128,6 +129,7 @@
         <option value="camperas">Camperas</option>
         <option value="pantalones">Pantalones</option>
         <option value="calzas">Calzas</option>
+         <option value="sweater">Sweaters</option>
         <option value="Bremer">Bremer</option>
         <option value="chalecos">Chalecos</option>
         <option value="joggins">Joggins Babucha c/frizza</option>
@@ -162,6 +164,7 @@
         Bremer: 16000,
         chalecos: 34000,
         joggins: 15000,
+        sweater: 14000,
         "joggins-talle-esp":16500
     };
 
@@ -213,12 +216,10 @@
             "bca3.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
             "bca4.jpg": { precio: 18000, descripcion: "Canguro 52x66" }
       
-        
         }
         };
       const descripcionesCategorias = {
-   /*joggins: "Joggins disponibles en talles del 1 al 5 Material de friza y algodón de alta calidad."*/
-
+       sweater: "Maxi Lana Acrilica"
     };
 async function cargarCatalogo(argumento = null) {
     let categoria = argumento || document.getElementById("categoria").value;
@@ -227,6 +228,7 @@ async function cargarCatalogo(argumento = null) {
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
     document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
+
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
         catalogo.innerHTML = `
@@ -284,3 +286,4 @@ cargarCatalogo();
       
 </script>
 </html> 
+  
