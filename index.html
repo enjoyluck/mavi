@@ -234,7 +234,7 @@ async function cargarCatalogo(argumento = null) {
     catalogo.innerHTML = "";
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
-    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") || categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
+    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") ||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
 
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
@@ -243,6 +243,8 @@ async function cargarCatalogo(argumento = null) {
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Maxi')">Buzo Maxi</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Morley')">Buzo Morley</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Camiseta-Darlon')">Camisetas Darlon</button>
+       
         `;
     }
      if (categoria === "Frazadas-Mantas") {
@@ -283,6 +285,11 @@ async function cargarCatalogo(argumento = null) {
             } else if (categoria.includes("Buzo-Morley")) {
                 precio = 16000;
                 descripcion = "Con Capucha amplio";
+           } else if (categoria.includes("Camiseta-Darlon")) {
+                precio["mangafina.jpg"] = 12000;
+                descripcion["mangafina.jpg"] = "Manga Fina";
+                precio= 13000;
+                descripcion= "Manga Princesa";
             } else if (categoria.includes("Camperas-Maxi")) {
                 precio = 16000;
                 descripcion = "Talles 2 al 6";
