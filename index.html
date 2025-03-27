@@ -119,7 +119,7 @@
     </style>
 </head>
 <body>
-    
+
 
 </div>
     <h1>Catálogo de Prendas</h1>
@@ -137,6 +137,8 @@
         <option value="joggins-talle-esp">Joggins Frizza Talle esp</option>
         <option value="Buzos-Camisetas">Buzos Camisetas</option>
         <option value="Frazadas-Mantas">Frazadas Mantas</option>
+        <option value="Bufandas-Gorros">Bufandas y Mas</option>
+ 
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -228,7 +230,7 @@ remeras: {
             "bca2.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
             "bca3.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
             "bca4.jpg": { precio: 18000, descripcion: "Canguro 52x66" }
-      
+
         }
         };
       const descripcionesCategorias = {
@@ -240,7 +242,8 @@ async function cargarCatalogo(argumento = null) {
     catalogo.innerHTML = "";
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
-    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon") ||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")) ? "block" : "none";
+    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon")||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")
+    ||categoria.includes("Bufandas")||categoria.includes("Guantes")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
 
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
@@ -252,6 +255,15 @@ async function cargarCatalogo(argumento = null) {
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Camiseta-Darlon')">Camisetas Darlon</button>
        
         `;
+    }
+    if (categoria === "Bufandas-Gorros") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Bufandas')">Bufandas</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Gorros')">Gorros</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Guantes')">Guantes</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Ruanas')">Ruanas</button>
+               
+         `;        
     }
      if (categoria === "Frazadas-Mantas") {
         catalogo.innerHTML = `
@@ -306,7 +318,7 @@ async function cargarCatalogo(argumento = null) {
           } else if (categoria.includes("Manta-Conejo")) {
                 precio = 45000;
                 descripcion = "2 1/2";
-              } else if (categoria.includes("Manta-Plush")) {
+          } else if (categoria.includes("Manta-Plush")) {
                 precio = 14000;
                 descripcion = "2 Plazas";
             }
@@ -331,7 +343,10 @@ function volverAtras() {
         cargarCatalogo("Buzos-Camisetas");
     } else if (categoriaActual.includes("Frazadas-Mantas")) {
         cargarCatalogo("Frazadas-Mantas");
-    } else {
+    } else if (categoriaActual.includes("Bufandas-Gorros")) {
+        cargarCatalogo("Bufandas-Gorros");
+    }
+    else {
         cargarCatalogo(); // Si no está en una subcarpeta, carga el catálogo normal
     }
 }
@@ -341,7 +356,6 @@ function abrirModal(img) {
 }
 
 cargarCatalogo();
-      
+
 </script>
 </html> 
-  
