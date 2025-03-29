@@ -1,374 +1,256 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Prendas</title>
+    <title>Gentileza de tu Cajero de confianza</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('https://enjoyluck.github.io/mavi/IMG-20250322-WA0106.jpg');
+            background-image: url('https://raw.githubusercontent.com/enjoyluck/Raspadita.online/refs/heads/main/it.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;     
+             color: silver;            
+             text-shadow: 2px 2px 4px black;
+              font-size: 30px;
+               font-weight: bold;  
         }
 
-        h1 { color: silver; }
-
-        .catalogo {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        .container {
+            margin-top: 50px;
         }
 
-        .item {
-            margin: 15px;
-            border: 1px solid #ddd;
+        h1 {
+            font-size: 24px;
+            text-shadow: 2px 2px 5px red;
+            display: inline-block;
             padding: 10px;
-            width: 200px;
+            border-radius: 10px;
+
+        }
+
+        .scratch-card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin-top: -29px;
+        }
+        /* CONFIGURACION ANIMACION ESTRELLA*/
+        .estrella {
+            width: 120px;
+            height: 120px;
+            background-color: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 5px;
+            box-shadow: 0px 0px 10px gold;
+            position: relative;
+            animation: titilar 1s infinite alternate;
         }
 
-        .item img { width: 100%; height: auto; transition: transform 0.2s; }
-        .precio { font-weight: bold; color: #333; }
-        .descripcion { font-size: 14px; color: #666; }
-        select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
-
-        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
-        .whatsapp-vendedora {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            z-index: 1000; 
+        .estrella::before {
+            content: "🎈"; 
+            font-size: 40px;
+            position: absolute;
         }
-  .whatsapp-texto {
-    position: fixed;
-    bottom: 85px; /* Ajusta la posición sobre el ícono */
-    right: 30px;
-    font-size: 20px;
-    color: pink;
-    font-weight: bold;
-    /*background: rgba(0, 0, 0, 0.3);*/
-    padding: 2px 5px;
-    border-radius: 5px;
-}
 
-    .whatsapp-vendedora img {
-    width: 100%;
-    height: auto;
-    border-radius: 50%;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s;
-    /* Filtro para cambiar el color a rosa */
-    /*filter: hue-rotate(160deg) saturate(500%) brightness(2.1);*/
-    filter: hue-rotate(160deg) saturate(100%) brightness(1.2);
+        .estrella.revealed::before {
+            content: none;
+            background-image: none;
+        }
 
-        } 
+        @keyframes titilar {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .revealed {
+            background-color: gold !important;
+        }
+
+        .celeste {
+            background-color: Silver !important;
+            color: white !important;
+        }
+
+        p#message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .bloqueado {
+            font-size: 28px;
+            color: white ;
+            text-shadow: 2px 2px 5px black;
+            margin-top: 50px;
+        }
+
+        .sabado {
+            text-align: center;
+            position: relative;
+            margin-top: 220px;
+            font-size: 30px;
+            font-weight: bold;
+            color:white;
+            text-shadow: 2px 2px 10px rgba(240, 215, 0, 1);
+            animation: titilar 1s infinite alternate;
+        }
+
+        .titulo-brillante {
+            text-align: center;
+            margin-top: -100px;
+            font-size: 20px;
+            font-weight: bold;
+             color: silver;            
+             text-shadow: 2px 2px 4px gold;
+             font-size: 30px;
+             color:white;
+            text-shadow: 2px 2px 10px rgba(255, 215, 0, 1);
+            /*animation: titilar 1s infinite alternate;*/
+
+            /*color: white;
+            text-shadow: 0 0 10px yellow, 0 0 20px red, 0 0 30px red;
+            animation: titilar 1s infinite alternate;*/
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
         /* Información del creador */
         .creador {
             position: fixed;
-            bottom: 5px;
+            bottom: 10px;
             left: 10px;
-            background: transparent;
-            color:silver;
+            color: silver;
             font-size: 14px;
             font-weight: bold;
             display: flex;
             align-items: center;
         }
+          .estrella-ganadora { 
+            width: 120px;
+            height: 120px;
+            background-color: gold;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: black;
+            font-weight: bold;
+            box-shadow: 10px 0px 10px gold;
+            transform: translatey(-500px);
+            position:relative;
+            margin-left:150px;
+
+
+        }
+
+        .estrella-ganadora::before {
+    content: "🎈";  
+    font-size: 40px; /* Ajusta el tamaño del ícono */
+    position: absolute; /* Fija la posición respecto a la estrella */
+    top: 15%; /* Lo mueve hacia abajo */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, 0); /* Ajusta el centrado exacto */
+}
+        
 
         .creador img {
-            width: 16px; /* Más pequeño */
-            height: 16px;
+            width: 20px;
+            height: 20px;
             margin-left: 5px;
-          /*filter: hue-rotate(260deg) saturate(100%) brightness(1.2);*/
-    filter: grayscale(110%) brightness(1.3) contrast(1.2);
+            filter: grayscale(200%) brightness(1.2) contrast(1.2);
         }
-  /* Botón de flecha para volver atrás */
-#boton-atras {
-    display: none;
-    position: fixed;
-    left: 170px; /* Centra el botón horizontalmente */
-    top: 115px;
-    font-size: 18px;
-    color: silver;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  /*transform: translateX(-50%); /* Mueve el botón para centrarlo */
-}
-
-/* Botones de subcarpetas */
-.subcarpeta-btn {
-    display: block;
-    background: silver;
-    color: black;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
     </style>
 </head>
 <body>
+  <script>
+        let gameVersion = "V1"; 
+        let prizes = ["200", "300", "450", "10%", "15%", "10%"];
+        prizes = prizes.sort(() => Math.random() - 0.5);
+        let played = false;
+        let lastPlayTime = localStorage.getItem("lastPlayTime");
+        let lastGameVersion = localStorage.getItem("gameVersion");
+        let selectedPrize = localStorage.getItem("selectedPrize");
+        let currentTime = new Date().getTime();
+        let timeLimit = 60 * 60 * 1000;
 
+        if (lastGameVersion === gameVersion && lastPlayTime && currentTime - lastPlayTime < timeLimit) {
+            document.body.innerHTML = `
+                <h1 class='bloqueado'>¡FELICITACIONES!</h1>
+                <div class='creador'>
+                    By Martin Clerici
+                    <a href='https://wa.me/541159045035' target='_blank'>
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png' alt='WhatsApp Creador' class='whatsapp-icon'>
+                    </a>
+                </div>
+            `;
 
-</div>
-    <h1>Catálogo de Prendas</h1>
-  <div id="boton-atras" onclick="volverAtras()">◀ Atrás</div>
-    <label for="categoria">Filtrar por categoría:</label>
-    <select id="categoria" onchange="cargarCatalogo()">
-        <option value="remeras">Remeras</option>
-        <option value="camperas">Camperas</option>
-        <option value="pantalones">Pantalones</option>
-        <option value="calzas">Calzas</option>
-         <option value="sweater">Sweaters</option>
-        <option value="Bremer">Bremer</option>
-        <option value="chalecos">Chalecos</option>
-        <option value="joggins">Joggins Babucha c/frizza</option>
-        <option value="joggins-talle-esp">Joggins Frizza Talle esp</option>
-        <option value="Buzos-Camisetas">Buzos Camisetas</option>
-        <option value="Frazadas-Mantas">Frazadas Mantas</option>
-        <option value="Bufandas-Gorros">Bufandas y Mas</option>
-
-    </select>
-
-    <div id="catalogo" class="catalogo"></div>
-
-    <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
-    </a>
-  <div class="whatsapp-texto">Mavi</div>
-
-    <div class="creador">
-        By Martin Clerici
-        <a href="https://wa.me/541159045035" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
-        </a>
-    </div>
-
-
-</body><script>
-    let categoriaActual = ""; /* hace que el boton vuelva atras en su categoria*/
-    const repoUsuario = "enjoyluck";
-    const repoNombre = "mavi";
-
-    const preciosFijos = {
-        remeras: 12000,
-        camperas: 45000,
-        pantalones: 13000,
-        calzas: 13000,
-        Bremer: 16000,
-        chalecos: 34000,
-        joggins: 15000,
-        sweater: 14000,
-        "joggins-talle-esp":16500
-    };
-
-    const preciosEspeciales = {
-        camperas: {
-            "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
-            "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
-        },
-        calzas: {
-            "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
-            "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
-            "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
-            "recta.jpg": { precio: 10500, descripcion: "Recta" },
-            "anticel.jpg": { precio: 10500, descripcion: "Anticelulitis" },
-            "chupint.jpg": { precio: 9500, descripcion: "lycra chupín térmica T 1 al 6"},
-            "retrot.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
-            "retrot1.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
-            "retrot2.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
-            "retrot3.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
-            "retrot4.jpg": { descripcion: "Retro Termica Talle 1 al 6"}
-
-        },
-        chalecos: {
-            "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-            "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
-            "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
-            "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" }
-        },
-      joggins: {
-            "jo1.jpg": { descripcion: "Talle del 1 al 5" },
-            "jo2.jpg": { descripcion: "Talle del 1 al 5" },
-            "jo3.jpg": { descripcion: "Talle del 1 al 5" },
-            "jo4.jpg": { descripcion: "Talle del 1 al 5" }
-        },
-        sweater: {
-            "ca1.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
-            "ca2.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
-            "ca3.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
-            "ca4.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" }
-        },
-
-      pantalones: {
-            "cu1.jpg": { precio: 16000, descripcion: "Cuerina T36 al 46" },
-            "cu2.jpg": { precio: 16000, descripcion: "Cuerina T36 al 46" }
-        },
-remeras: {
-            "carmen.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox " },
-            "carmen1.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox" },
-            "carmen2.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox" }
-},
-
-       "joggins-talle-esp": {
-            "joesp1.jpg": { descripcion: "Talle 6 al 10" },
-            "joesp2.jpg": { descripcion: "Talle 6 al 10" }
-        },
-        Bremer: {
-            "swpi1.jpg": { precio: 16500, descripcion: "Pico 52 x 63" },
-            "swpi2.jpg": { precio: 16500, descripcion: "Pico 52 x 63" },
-            "swpi3.jpg": { precio: 16500, descripcion: "Pico 52 x 63" },
-            //"swo1.jpg": { precio: 21000, descripcion: "Pico 52 x 63" },
-            "swo2.jpg": { precio: 21000, descripcion: "Oversize c/bolsillo 65 x 70" },
-            "swo3.jpg": { precio: 21000, descripcion: "Oversize c/bolsillo 65 x 70" },
-            "swt1.jpg": { precio: 16500, descripcion: "Trenza 50 x 67" },
-            "swt2.jpg": { precio: 16500, descripcion: "Trenza 50 x 67" },
-            "swt3.jpg": { precio: 16500, descripcion: "Trenza 50 x 67" },
-            "sd1.jpg": { precio: 16500, descripcion: " Detalle abajo 58x63" },
-            "sd2.jpg": { precio: 16500, descripcion: "Detalle abajo 58x63" },
-            "sd3.jpg": { precio: 16500, descripcion: "Detalle abajo 58x63" },
-            "sd4.jpg": { precio: 16500, descripcion: "Detalle abajo 58x63" },
-            "bca1.jpg": { precio: 18000, descripcion: " Canguro 52x66" },
-            "bca2.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
-            "bca3.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
-            "bca4.jpg": { precio: 18000, descripcion: "Canguro 52x66" }
-
-        }
-        };
-      const descripcionesCategorias = {
-       sweater: "Maxi Lana Acrilica"
-    };
-async function cargarCatalogo(argumento = null) {
-    let categoria = argumento || document.getElementById("categoria").value;
-    let catalogo = document.getElementById("catalogo");
-    catalogo.innerHTML = "";
-
-    // Mostrar botón de volver atrás si estamos en una subcarpeta
-    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon")||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")
-    ||categoria.includes("Bufandas")||categoria.includes("Guantes")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
-
-    // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
-    if (categoria === "Buzos-Camisetas") {
-        catalogo.innerHTML = `
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Maxi')">Buzo Maxi</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Morley')">Buzo Morley</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Camiseta-Darlon')">Camisetas Darlon</button>
-       
-        `;
-    }
-    if (categoria === "Bufandas-Gorros") {
-        catalogo.innerHTML = `
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Bufandas')">Bufandas</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Gorros')">Gorros</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Guantes')">Guantes</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Ruanas')">Ruanas</button>
-               
-         `;        
-    }
-     if (categoria === "Frazadas-Mantas") {
-        catalogo.innerHTML = `
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Cordero')">Manta Cordero</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Conejo')">Manta Conejo</button>
-        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Plush')">Manta Plush</button>
-        
-        `;
-        return;
-    }
-
-    if (descripcionesCategorias[categoria]) {
-        catalogo.innerHTML += `<p style="font-size: 16px; color: black; font-weight: bold; margin-bottom: 15px;">${descripcionesCategorias[categoria]}</p>`;
-    }
-
-    try {
-        let url = `https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`;
-        let response = await fetch(url);
-        if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
-
-        let archivos = await response.json();
-        archivos.forEach(archivo => {
-            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
-
-            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
-            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
-
-            if (categoria.includes("Buzo-Darlon")) {
-                precio = 22000;
-                descripcion = "Overside";
-            } else if (categoria.includes("Buzo-Frizza")) {
-                precio = 14000;
-                descripcion = "Talle 3 y 5";
-            } else if (categoria.includes("Buzo-Maxi")) {
-                precio = 16500;
-                descripcion = "Plus";
-            } else if (categoria.includes("Buzo-Morley")) {
-                precio = 16000;
-                descripcion = "Con Capucha amplio";
-           } else if (categoria.includes("Camiseta-Darlon")) {
-                precio["mangafina.jpg"] = 12000;
-                descripcion["mangafina.jpg"] = "Manga Fina";
-                precio= 13000;
-                descripcion= "Manga Princesa";
-            } else if (categoria.includes("Camperas-Maxi")) {
-                precio = 16000;
-                descripcion = "Talles 2 al 6";
-                //Frasadas y Mantas
-           } else if (categoria.includes("Manta-Cordero")) {
-                precio = 35000;
-                descripcion = "Lisas 25000";
-          } else if (categoria.includes("Manta-Conejo")) {
-                precio = 45000;
-                descripcion = "2 1/2";
-          } else if (categoria.includes("Manta-Plush")) {
-                precio = 14000;
-                descripcion = "2 Plazas";
+           if (selectedPrize) {
+                document.body.innerHTML += `
+                     <div>
+                       /* <h2>Konabet Casino</h2>
+                        <div class="estrella-ganadora">${selectedPrize}</div>
+                    </div> 
+                `;
             }
+        } else {
+            document.body.innerHTML = `
+                <div class="container">
+          <p class="sabado brillante">KONABET CASINO</p>
+           <h1 class="titulo-brillante">Gentileza de tu Cajero de Confianza</h1>
+                    <div class="scratch-card">
+                        <div class="estrella" onclick="revealPrize(this, 0)"></div>
+                        <div class="estrella" onclick="revealPrize(this, 1)"></div>
+                        <div class="estrella" onclick="revealPrize(this, 2)"></div>
+                        <div class="estrella" onclick="revealPrize(this, 3)"></div>
+                        <div class="estrella" onclick="revealPrize(this, 4)"></div>
+                        <div class="estrella" onclick="revealPrize(this, 5)"></div>
+                    </div>
+                </div>
+                <div class="creador">
+                    By Martin Clerici
+                    <a href="https://wa.me/541159045035" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador" class="whatsapp-icon">
+                    </a>
+                </div>
+            `;
 
-            let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
-                                                 .replace("/contents/", "/main/");
+            function revealPrize(element, index) {
+                if (played) return;
 
-            catalogo.innerHTML += `
-                <div class="item">
-                    <img src="${imagenUrl}" onclick="abrirModal('${imagenUrl}')">
-                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
-                    <p class="descripcion">${descripcion}</p>
-                </div>`;
-        });
-    } catch (error) {
-        console.error(error);
-        catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
-    }
-}
-function volverAtras() {
-    if (categoriaActual.includes("Buzos-Camisetas")) {
-        cargarCatalogo("Buzos-Camisetas");
-    } else if (categoriaActual.includes("Frazadas-Mantas")) {
-        cargarCatalogo("Frazadas-Mantas");
-    } else if (categoriaActual.includes("Bufandas-Gorros")) {
-        cargarCatalogo("Bufandas-Gorros");
-    }
-    else {
-        cargarCatalogo(); // Si no está en una subcarpeta, carga el catálogo normal
-    }
-}
+                document.querySelectorAll(".estrella").forEach((estrella, i) => {
+                    estrella.textContent = prizes[i];
+                    estrella.classList.add("revealed");
+                });
 
-function abrirModal(img) {
-    window.open(img, "_blank");
-}
+                element.classList.add("celeste");
+                played = true;
 
-cargarCatalogo();
-
-</script>
-</html> 
+                localStorage.setItem("gameVersion", gameVersion);
+                localStorage.setItem("lastPlayTime", currentTime);
+                localStorage.setItem("selectedPrize", prizes[index]);
+            }
+        }
+    </script>
+</body>
+</html>
