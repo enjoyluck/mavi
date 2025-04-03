@@ -178,6 +178,7 @@
             "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
             "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
         },
+     
         calzas: {
             "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
             "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
@@ -204,7 +205,7 @@
             "jo3.jpg": { descripcion: "Talle del 1 al 5" },
             "jo4.jpg": { descripcion: "Talle del 1 al 5" }
         },
-         sweater: {
+        sweater: {
             "ca1.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
             "ca2.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
             "ca3.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
@@ -215,6 +216,7 @@
             "lafri3.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
             "lafri4.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" }       
         },
+
       pantalones: {
             "cu1.jpg": { precio: 16000, descripcion: "Cuerina T36 al 46" },
             "cu2.jpg": { precio: 16000, descripcion: "Cuerina T36 al 46" },
@@ -308,21 +310,36 @@ async function cargarCatalogo(argumento = null) {
         archivos.forEach(archivo => {
             if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
 
-            let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
-            let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
+let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
 
-            if (categoria.includes("Buzo-Darlon")) {
-                precio = 22000;
-                descripcion = "Overside";
-            } else if (categoria.includes("Buzo-Frizza")) {
-                precio = 14000;
-                descripcion = "Talle 3 y 5";
-            } else if (categoria.includes("Buzo-Maxi")) {
-                precio = 16500;
-                descripcion = "Plus";
-            } else if (categoria.includes("Buzo-Morley")) {
-                precio = 16000;
-                descripcion = "Con Capucha amplio";
+if (categoria.includes("Buzo-Darlon")) {
+    // Objeto con precios y descripciones por imagen
+    const darlonDetalles = {
+        "d5.jpg": { precio: 12500, descripcion: "Cede hasta Talle 4" },
+        "d6.jpg": { precio: 12500, descripcion: "Cede hasta Talle 4" },
+        "d7.jpg": { precio: 12500, descripcion: "Cede hasta Talle 4" }
+    };
+
+    // Obtener detalles según el nombre de la imagen
+    if (darlonDetalles[archivo.name]) {
+        precio = darlonDetalles[archivo.name].precio;
+        descripcion = darlonDetalles[archivo.name].descripcion;
+    } else {
+        // Valores por defecto si la imagen no está en el objeto
+        precio = 22000;
+        descripcion = "Oversize";
+    }
+} else if (categoria.includes("Buzo-Frizza")) {
+    precio = 14000;
+    descripcion = "Talle 3 y 5";
+} else if (categoria.includes("Buzo-Maxi")) {
+    precio = 16500;
+    descripcion = "Plus";
+} else if (categoria.includes("Buzo-Morley")) {
+    precio = 16000;
+    descripcion = "Con Capucha amplio";
+
            } else if (categoria.includes("Camiseta-Darlon")) {
                 precio["mangafina.jpg"] = 12000;
                 descripcion["mangafina.jpg"] = "Manga Fina";
