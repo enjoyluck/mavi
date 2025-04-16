@@ -138,7 +138,7 @@
         <option value="Buzos-Camisetas">Buzos Camisetas</option>
         <option value="Frazadas-Mantas">Frazadas Mantas</option>
         <option value="Bufandas-Gorros">Bufandas y Mas</option>
-
+         <option value="Sacos">Sacos</option>
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -289,7 +289,7 @@ async function cargarCatalogo(argumento = null) {
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
     document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon")||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")
-    ||categoria.includes("Bufandas")||categoria.includes("Guantes")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
+    ||categoria.includes("Bufandas")||categoria.includes("Sacos")||categoria.includes("Guantes")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
 
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
@@ -317,6 +317,11 @@ async function cargarCatalogo(argumento = null) {
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Conejo')">Manta Conejo</button>
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Plush')">Manta Plush</button>
         
+        `;
+             }
+     if (categoria === "Sacos") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Sacos/Camisacos')">Camisacos Darlon</button>
         `;
         return;
     }
@@ -394,7 +399,26 @@ if (categoria.includes("Buzo-Maxi")) {
           } else if (categoria.includes("Manta-Plush")) {
                 precio = 14000;
                 descripcion = "2 Plazas";
-            }
+          }
+            
+              if (categoria.includes("Sacos/Camisacos")) {
+               const SacosDetalles = {
+        "1.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "2.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "3.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "4.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "5.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "6.jpg": { precio: 23000, descripcion: "Talle 4,5y6" }
+       };
+
+              if (SacosDetalles[archivo.name]) {
+        precio = SacosDetalles[archivo.name].precio;
+        descripcion = SacosDetalles[archivo.name].descripcion;
+    } else {
+        precio = 22000;
+        descripcion = "Oversize";
+    }
+}
 
             let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
                                                  .replace("/contents/", "/main/");
