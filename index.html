@@ -139,6 +139,7 @@
         <option value="Frazadas-Mantas">Frazadas Mantas</option>
         <option value="Bufandas-Gorros">Bufandas y Mas</option>
          <option value="Sacos">Sacos</option>
+        
     </select>
 
     <div id="catalogo" class="catalogo"></div>
@@ -164,7 +165,6 @@
     const preciosFijos = {
         remeras: 12000,
         camperas: 45000,
-        pantalones: 13000,
         calzas: 13000,
         Bremer: 16000,
         chalecos: 34000,
@@ -228,18 +228,13 @@
             "lafri1.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
             "lafri2.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
             "lafri3.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
-            "lafri4.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" }       
+            "lafri4.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },    
+            "1.jpg": { precio: 18000, descripcion: "Lana Frizzada Abarca hasta un 4" },
+            "2.jpg": { precio: 18000, descripcion: "Lana Frizzada Abarca hasta un 4" }       
         },
 
-      pantalones: {
-            "s1.jpg": { precio: 18000, descripcion: "Sastrero T38 al 46" },
-            "s2.jpg": { precio: 18000, descripcion: "Sastrero T38 al 46" },
-            "cu1.jpg": { precio: 16000, descripcion: "Cuerina T36 al 46" },
-            "cu2.jpg": { precio: 16000, descripcion: "Cuerina T36 al 46" },
-            "engomado.jpg": { precio: 15500, descripcion: "Engomado T2 al 5" },
-            "engomado1.jpg": { precio: 15500, descripcion: "Engomado T2 al 5"},  
-            "engomado2.jpg": { precio: 15500, descripcion: "Engomado T2 al 5"}
-        },
+
+      
 remeras: {
             "carmen.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox " },
             "carmen1.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox" },
@@ -279,6 +274,7 @@ remeras: {
             "b6.jpg": { precio: 17000, descripcion: "47x62" }
         }
         };
+
       const descripcionesCategorias = {
        sweater: "Maxi Lana Acrilica"
     };
@@ -289,7 +285,7 @@ async function cargarCatalogo(argumento = null) {
 
     // Mostrar botón de volver atrás si estamos en una subcarpeta
     document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon")||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")
-    ||categoria.includes("Bufandas")||categoria.includes("Sacos")||categoria.includes("Guantes")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
+    ||categoria.includes("Bufandas")||categoria.includes("Sacos")||categoria.includes("Guantes")||categoria.includes("Palazos")||categoria.includes("Cuerina")||categoria.includes("Sastrero")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
 
     // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
     if (categoria === "Buzos-Camisetas") {
@@ -318,12 +314,19 @@ async function cargarCatalogo(argumento = null) {
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Plush')">Manta Plush</button>
         
         `;
-             }
+         }
      if (categoria === "Sacos") {
         catalogo.innerHTML = `
         <button class="subcarpeta-btn" onclick="cargarCatalogo('Sacos/Camisacos')">Camisacos Darlon</button>
         `;
-        return;
+         }
+     if (categoria === "pantalones") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('pantalones/Palazos')">Palazos</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('pantalones/Cuerina')">Cuerina-Engomados</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('pantalones/Sastrero')">Sastrero</button>
+        `;
+         return;
     }
 
     if (descripcionesCategorias[categoria]) {
@@ -418,6 +421,42 @@ if (categoria.includes("Buzo-Maxi")) {
         precio = 22000;
         descripcion = "Oversize";
     }
+              }
+             if (categoria.includes ("pantalones/Palazos")) {
+                 const pantalonesDetalles = {
+                     "1.jpg": { precio: 18500, descripcion: "Darlon Frizado Elastizado T2a5"},
+                     "2.jpg": { precio: 18500, descripcion: "Darlon Frizado Elastizado T2a5"}
+                 };  
+                 if (pantalonesDetalles[archivo.name]) {
+                 precio = pantalonesDetalles[archivo.name].precio;
+                 descripcion = pantalonesDetalles[archivo.name].descripcion;
+             }
+                               }
+             if (categoria.includes ("pantalones/Cuerina")) {
+                 const pantalonesDetalles = {
+                     "cu1.jpg": { precio: 16000, descripcion: "Cuerina Talle 38 al 46"},
+                     "cu2.jpg": { precio: 16000, descripcion: "Cuerina Talle 38 al 46"},
+                     "engomado.jpg": { precio: 15500, descripcion: "Talle 2a5"},
+                     "engomado1.jpg": { precio: 15500, descripcion: "Talle 2a5"},
+                     "engomado2.jpg": { precio: 15500, descripcion: "Talle 2a5"}
+                 };
+                 
+                 if (pantalonesDetalles[archivo.name]) {
+                 precio = pantalonesDetalles[archivo.name].precio;
+                 descripcion = pantalonesDetalles[archivo.name].descripcion;
+             }
+             }
+            if (categoria.includes ("pantalones/Sastrero")) {
+                 const pantalonesDetalles = {
+                     "1.jpg": { precio: 15500, descripcion: "Talle 2a5"},
+                     "s1.jpg": { precio: 15500, descripcion: "Talle 2a5"},
+                     "s2.jpg": { precio: 15500, descripcion: "Talle 2a5"}
+                 };
+            
+             if (pantalonesDetalles[archivo.name]) {
+                 precio = pantalonesDetalles[archivo.name].precio;
+                 descripcion = pantalonesDetalles[archivo.name].descripcion;
+             }
 }
 
             let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
