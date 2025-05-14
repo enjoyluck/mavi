@@ -430,4 +430,544 @@ if (categoria.includes("Buzo-Maxi")) {
           }
             
               if (categoria.includes("Sacos/Camisacos")) {
+              <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Prendas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url('https://enjoyluck.github.io/mavi/IMG-20250322-WA0106.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        h1 { color: silver; }
+
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .item {
+            margin: 15px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 200px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+        }
+
+        .item img { width: 100%; height: auto; transition: transform 0.2s; }
+        .precio { font-weight: bold; color: #333; }
+        .descripcion { font-size: 14px; color: #666; }
+        select { margin-bottom: 20px; padding: 10px; font-size: 16px; }
+
+        /* Botón flotante de WhatsApp (Vendedora - Rosa) */
+        .whatsapp-vendedora {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000; 
+        }
+  .whatsapp-texto {
+    position: fixed;
+    bottom: 85px; /* Ajusta la posición sobre el ícono */
+    right: 30px;
+    font-size: 20px;
+    color: pink;
+    font-weight: bold;
+    /*background: rgba(0, 0, 0, 0.3);*/
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+    .whatsapp-vendedora img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s;
+    /* Filtro para cambiar el color a rosa */
+    /*filter: hue-rotate(160deg) saturate(500%) brightness(2.1);*/
+    filter: hue-rotate(160deg) saturate(100%) brightness(1.2);
+
+        } 
+
+        /* Información del creador */
+        .creador {
+            position: fixed;
+            bottom: 5px;
+            left: 10px;
+            background: transparent;
+            color:silver;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .creador img {
+            width: 16px; /* Más pequeño */
+            height: 16px;
+            margin-left: 5px;
+          /*filter: hue-rotate(260deg) saturate(100%) brightness(1.2);*/
+    filter: grayscale(110%) brightness(1.3) contrast(1.2);
+        }
+  /* Botón de flecha para volver atrás */
+#boton-atras {
+    display: none;
+    position: fixed;
+    left: 170px; /* Centra el botón horizontalmente */
+    top: 115px;
+    font-size: 18px;
+    color: silver;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  /*transform: translateX(-50%); /* Mueve el botón para centrarlo */
+}
+
+/* Botones de subcarpetas */
+.subcarpeta-btn {
+    display: block;
+    background: silver;
+    color: black;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+
+
+</div>
+    <h1>Catálogo de Prendas</h1>
+  <div id="boton-atras" onclick="volverAtras()">◀ Atrás</div>
+    <label for="categoria">Filtrar por categoría:</label>
+    <select id="categoria" onchange="cargarCatalogo()">
+        <option value="remeras">Remeras</option>
+        <option value="camperas">Camperas</option>
+        <option value="pantalones">Pantalones</option>
+        <option value="calzas">Calzas</option>
+         <option value="sweater">Sweaters</option>
+        <option value="Bremer">Bremer</option>
+        <option value="chalecos">Chalecos</option>
+        <option value="joggins">Joggins Babucha c/frizza</option>
+        <option value="joggins-talle-esp">Joggins Frizza Talle esp</option>
+        <option value="Buzos-Camisetas">Buzos Camisetas</option>
+        <option value="Frazadas-Mantas">Frazadas Mantas</option>
+        <option value="Bufandas-Gorros">Bufandas y Mas</option>
+         <option value="Sacos">Sacos</option>
+        
+    </select>
+
+    <div id="catalogo" class="catalogo"></div>
+
+    <a href="https://wa.me/5491127799341" class="whatsapp-vendedora" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Vendedora">
+    </a>
+  <div class="whatsapp-texto">Mavi</div>
+
+    <div class="creador">
+        By Martin Clerici
+        <a href="https://wa.me/541159045035" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp Creador">
+        </a>
+    </div>
+
+
+</body><script>
+    let categoriaActual = ""; /* hace que el boton vuelva atras en su categoria*/
+    const repoUsuario = "enjoyluck";
+    const repoNombre = "mavi";
+
+    const preciosFijos = {
+        remeras: 12000,
+        camperas: 45000,
+        calzas: 13000,
+        Bremer: 16000,
+        chalecos: 34000,
+        joggins: 15000,
+        sweater: 14000,
+        "joggins-talle-esp":16500,
+        Sacos: 20000
+    };
+
+    const preciosEspeciales = {
+        camperas: {
+            "IMG-20250322-WA0129.jpg": { precio: 45000, descripcion: "Campera puffer - Talles M al 2XL" },
+            "campera_azul.jpg": { precio: 22000, descripcion: "Campera Azul - Talles S al XL" }
+        },
+
+        calzas: {
+            "talle-esp.jpg": { precio: 12000, descripcion: "Lycra talle especial" },
+            "golfa.jpg": { precio: 14000, descripcion: "Golfrada" },
+            "oxford.jpg": { precio: 12000, descripcion: "Oxford" },
+            "recta.jpg": { precio: 10500, descripcion: "Recta" },
+            "anticel.jpg": { precio: 10500, descripcion: "Anticelulitis" },
+            "chupint.jpg": { precio: 9500, descripcion: "lycra chupín térmica T 1 al 6"},
+            "retrot.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
+            "retrot1.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
+            "retrot2.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
+            "retrot3.jpg": { descripcion: "Retro Termica Talle 1 al 6"},
+            "retrot4.jpg": { descripcion: "Retro Termica Talle 1 al 6"}
+
+        },
+        chalecos: {
+            "c1.jpg": { precio: 17000, descripcion: "Cuerina  - Talles 1 al 4" },
+            "c2.jpg": { precio: 17000, descripcion: "Cuerina - Talles 1 al 4" },
+            "chal1.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+            "chal2.jpg": { precio: 34000, descripcion: "Opaco puffer - Talles S al 2XL" },
+            "chalargo1.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
+            "chalargo2.jpg": { precio: 45000, descripcion: "Solo Azul - Talles S al M" },
+            "pa1.jpg": { precio: 18000, descripcion: "Talle unico - Abarca 3y 4" },
+            "pa2.jpg": { precio: 18000, descripcion: "Talle unico - Abarca 3y 4" },
+            "pa3.jpg": { precio: 18000, descripcion: "Talle unico - Abarca 3y 4" },
+            "pa4.jpg": { precio: 18000, descripcion: "Talle unico - Abarca 3y 4" },
+            "pa5.jpg": { precio: 18000, descripcion: "Talle unico - Abarca 3y 4" },
+            "pa6.jpg": { precio: 18000, descripcion: "Talle unico - Abarca 3y 4" },
+            "cu.jpg": { precio: 25000, descripcion: "Cuerina y guata talle 2 al 5" },
+            "cu1.jpg": { precio: 25000, descripcion: "Cuerina y guata talle 2 al 5" },
+            "cu2.jpg": { precio: 25000, descripcion: "Cuerina y guata talle 2 al 5" }
+        },
+      joggins: {
+            "jo1.jpg": { descripcion: "Talle del 1 al 5" },
+            "jo2.jpg": { descripcion: "Talle del 1 al 5" },
+            "jo3.jpg": { descripcion: "Talle del 1 al 5" },
+            "jo4.jpg": { descripcion: "Talle del 1 al 5" },
+            "ba.jpg": { precio: 15000, descripcion: " Babucha Oversize Talle del 2 al 5" },
+            "ba1.jpg": { precio: 15000, descripcion: "Babucha Oversize Talle del 2 al 5" },
+            "ba2.jpg": { precio: 15000, descripcion: "Babucha Oversize Talle del 2 al 5" },
+            "co.jpg": { precio: 32000, descripcion: " Conjunto Darlon Talle 3 al 6 Reales" },
+            "co1.jpg": { precio: 32000, descripcion: "Conjunto Darlon Talle 3 al 6 Reales" },
+            "co2.jpg": { precio: 32000, descripcion: "Conjunto Darlon Talle 3 al 6 Reales" }
+        },
+        sweater: {
+            "ca1.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
+            "ca2.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
+            "ca3.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
+            "ca4.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
+            "lafri.jpg": { precio: 16000, descripcion: "Cardigan frizadoTalle único Sede hasta un 4" },
+            "lafri1.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
+            "lafri2.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
+            "lafri3.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },
+            "lafri4.jpg": { precio: 16000, descripcion: "Lana Frizzada Abarca 4y 5" },    
+            "1.jpg": { precio: 18000, descripcion: "Lana Frizzada Abarca hasta un 4" },
+            "2.jpg": { precio: 18000, descripcion: "Lana Frizzada Abarca hasta un 4" }       
+        },
+
+
+      
+          remeras: {
+            "carmen.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox " },
+            "carmen1.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox" },
+            "carmen2.jpg": { precio: 13000, descripcion: "Plus T 5 al 9 Aprox" }
+},
+        Sacos: {
+            "c1.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6 " },
+            "c2.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6" },
+            "c3.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6" },
+            "c4.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6 " },
+            "c5.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6" },
+            "c6.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6" },
+            "c7.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6 " },
+            "c8.jpg": { precio: 23000, descripcion: "Camisaco de Paño Talle 4-5-6" },
+            "s1.jpg": { precio: 25000, descripcion: "Saco de Bucle Talle 3-4-5" },
+            "s2.jpg": { precio: 25000, descripcion: "Saco de Bucle Talle 3-4-5 " },
+            "s3.jpg": { precio: 25000, descripcion: "Saco de Bucle Talle 3-4-5" },
+            "s4.jpg": { precio: 25000, descripcion: "Saco de Bucle Talle 3-4-5" },
+            "o1.jpg": { descripcion: "Camisaco Overside Talle 1 al 4" },
+            "o2.jpg": { descripcion: "Camisaco Overside Talle 1 al 4" },
+            "o3.jpg": { descripcion: "Camisaco Overside Talle 1 al 4" },
+            "8.jpg": { precio: 25000, descripcion: "Paño de punto Talles reales 2 -3-4" },
+            "9.jpg": { precio: 25000, descripcion: "Paño de punto Talles reales 2 -3-4" },
+            "10.jpg": { precio: 25000, descripcion: "Paño de punto Talles reales 2 -3-4" },
+            "11.jpg": { precio: 25000, descripcion: "Saco bucle Talle 3-4-5 "},
+            "12.jpg": { precio: 25000, descripcion: "Saco bucle Talle 3-4-5" }
+},
+       "joggins-talle-esp": {
+            "joesp1.jpg": { descripcion: "Talle 6 al 10" },
+            "joesp2.jpg": { descripcion: "Talle 6 al 10" }
+        },
+        Bremer: {
+            "swpi1.jpg": { precio: 16500, descripcion: "Pico 52 x 63" },
+            "swpi2.jpg": { precio: 16500, descripcion: "Pico 52 x 63" },
+            "swpi3.jpg": { precio: 16500, descripcion: "Pico 52 x 63" },
+            //"swo1.jpg": { precio: 21000, descripcion: "Pico 52 x 63" },
+            "swo2.jpg": { precio: 21000, descripcion: "Oversize c/bolsillo 65 x 70" },
+            "swo3.jpg": { precio: 21000, descripcion: "Oversize c/bolsillo 65 x 70" },
+            "swt1.jpg": { precio: 16500, descripcion: "Trenza 50 x 67" },
+            "swt2.jpg": { precio: 16500, descripcion: "Trenza 50 x 67" },
+            "swt3.jpg": { precio: 16500, descripcion: "Trenza 50 x 67" },
+            "sd1.jpg": { precio: 16500, descripcion: " Detalle abajo 58x63" },
+            "sd2.jpg": { precio: 16500, descripcion: "Detalle abajo 58x63" },
+            "sd3.jpg": { precio: 16500, descripcion: "Detalle abajo 58x63" },
+            "sd4.jpg": { precio: 16500, descripcion: "Detalle abajo 58x63" },
+            "bca1.jpg": { precio: 18000, descripcion: " Canguro 52x66" },
+            "bca2.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
+            "bca3.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
+            "bca4.jpg": { precio: 18000, descripcion: "Canguro 52x66" },
+            "bca5.jpg": { precio: 26500, descripcion: "C/Capucha 42x60" },
+            "bca6.jpg": { precio: 26500, descripcion: "C/Capucha 42x60" },
+            "bca7.jpg": { precio: 26500, descripcion: "C/Capucha 42x60" },
+            "b1.jpg": { precio: 15500, descripcion: "47x62" },
+            "b2.jpg": { precio: 15500, descripcion: "47x62" },
+            "b3.jpg": { precio: 17000, descripcion: "47x62" },
+            "b4.jpg": { precio: 17000, descripcion: "47x62" },
+            "b5.jpg": { precio: 17000, descripcion: "47x62" },
+            "b6.jpg": { precio: 17000, descripcion: "47x62" }
+        }
+        };
+
+      const descripcionesCategorias = {
+       sweater: "Maxi Lana Acrilica"
+    };
+async function cargarCatalogo(argumento = null) {
+    let categoria = argumento || document.getElementById("categoria").value;
+    let catalogo = document.getElementById("catalogo");
+    catalogo.innerHTML = "";
+
+    // Mostrar botón de volver atrás si estamos en una subcarpeta
+    document.getElementById("boton-atras").style.display = (categoria.includes("Buzo-Darlon")||categoria.includes("Camiseta-Darlon") ||categoria.includes("Buzo-Maxi") || categoria.includes("Manta-Conejo") ||categoria.includes("Manta-Cordero") ||categoria.includes("Manta-Plush") ||categoria.includes("Buzo-Morley") ||categoria.includes("Camperas-Maxi") || categoria.includes("Buzo-Frizza")
+    ||categoria.includes("Bufandas")||categoria.includes("Sacos")||categoria.includes("Guantes")||categoria.includes("Palazos")||categoria.includes("Cuerina")||categoria.includes("Sastrero")||categoria.includes("Ruanas")||categoria.includes("Gorros")) ? "block" : "none";
+
+    // Si la categoría es "Buzos-Camisetas", mostrar los botones de subcarpetas
+    if (categoria === "Buzos-Camisetas") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Darlon')">Buzo Darlon</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Frizza')">Buzo Frizza</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Maxi')">Buzo Maxi</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Buzo-Morley')">Buzo Morley</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Buzos-Camisetas/Camiseta-Darlon')">Camisetas Darlon</button>
+       
+        `;
+    }
+    if (categoria === "Bufandas-Gorros") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Bufandas')">Bufandas</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Gorros')">Gorros</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Guantes')">Guantes</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Bufandas-Gorros/Ruanas')">Ruanas</button>
+               
+         `;        
+    }
+     if (categoria === "Frazadas-Mantas") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Cordero')">Manta Cordero</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Conejo')">Manta Conejo</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Frazadas-Mantas/Manta-Plush')">Manta Plush</button>
+        
+        `;
+         }
+     if (categoria === "Sacos") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('Sacos/Camisacos')">Camisacos Darlon</button>
+        `;
+         }
+     if (categoria === "pantalones") {
+        catalogo.innerHTML = `
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('pantalones/Palazos')">Palazos</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('pantalones/Cuerina')">Cuerina-Engomados</button>
+        <button class="subcarpeta-btn" onclick="cargarCatalogo('pantalones/Sastrero')">Sastrero</button>
+        `;
+         return;
+    }
+
+    if (descripcionesCategorias[categoria]) {
+        catalogo.innerHTML += `<p style="font-size: 16px; color: black; font-weight: bold; margin-bottom: 15px;">${descripcionesCategorias[categoria]}</p>`;
+    }
+
+    try {
+        let url = `https://api.github.com/repos/${repoUsuario}/${repoNombre}/contents/${categoria}`;
+        let response = await fetch(url);
+        if (!response.ok) throw new Error("No se pudo acceder a la carpeta.");
+
+        let archivos = await response.json();
+        archivos.forEach(archivo => {
+            if (!/\.(jpg|jpeg|png)$/i.test(archivo.name)) return;
+
+let precio = preciosEspeciales[categoria]?.[archivo.name]?.precio || preciosFijos[categoria] || 0;
+let descripcion = preciosEspeciales[categoria]?.[archivo.name]?.descripcion || "";
+
+// Buzo-Darlon
+if (categoria.includes("Buzo-Darlon")) {
+    const darlonDetalles = {
+        "d5.jpg": { precio: 12500, descripcion: "Cede hasta Talle 4" },
+        "d6.jpg": { precio: 12500, descripcion: "Cede hasta Talle 4" },
+        "d7.jpg": { precio: 12500, descripcion: "Cede hasta Talle 4" }
+    };
+
+    if (darlonDetalles[archivo.name]) {
+        precio = darlonDetalles[archivo.name].precio;
+        descripcion = darlonDetalles[archivo.name].descripcion;
+    } else {
+        precio = 22000;
+        descripcion = "Oversize";
+    }
+}
+
+// Buzo-Maxi (esto debe estar FUERA del bloque anterior)
+if (categoria.includes("Buzo-Maxi")) {
+    const maxiDetalles = {
+        "ma1.jpg": { precio: 18000, descripcion: "Talle 3y5" },
+        "ma2.jpg": { precio: 18000, descripcion: "Talle 3y5" }
+    };
+
+    if (maxiDetalles[archivo.name]) {
+        precio = maxiDetalles[archivo.name].precio;
+        descripcion = maxiDetalles[archivo.name].descripcion;
+    } else {
+        precio = 16000;
+        descripcion = "Plus";
+    }
+
+} else if (categoria.includes("Buzo-Frizza")) {
+    precio = 14000;
+    descripcion = "Talle 3 y 5";
+} else if (categoria.includes("Buzo-Morley")) {
+    precio = 16000;
+    descripcion = "Con Capucha amplio";
+
+           } else if (categoria.includes("Camiseta-Darlon")) {
+                precio["mangafina.jpg"] = 12000;
+                descripcion["mangafina.jpg"] = "Manga Fina";
+                precio= 13000;
+                descripcion= "Manga Princesa";
+            } else if (categoria.includes("Camperas-Maxi")) {
+                precio = 16000;
+                descripcion = "Talles 2 al 6";
+                //Frasadas y Mantas
+           } else if (categoria.includes("Manta-Cordero")) {
+                precio = 35000;
+                descripcion = "Lisas 25000";
+          } else if (categoria.includes("Manta-Conejo")) {
+                precio = 45000;
+                descripcion = "2 1/2";
+          } else if (categoria.includes("Manta-Plush")) {
+                precio = 14000;
+                descripcion = "2 Plazas";
+          }
+            
+              if (categoria.includes("Sacos/Camisacos")) {
+const SacosDetalles = {
+        "1.jpg":if (categoria.includes("Sacos/Camisacos")) {{ precio: 23000, descripcion: "Talle 4,5y6" },
+        "2.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "3.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "4.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "5.jpg": { precio: 23000, descripcion: "Talle 4,5y6" },
+        "6.jpg": { precio: 23000, descripcion: "Talle 4,5y6" }
+       };
+
+              if (SacosDetalles[archivo.name]) {
+        precio = SacosDetalles[archivo.name].precio;
+        descripcion = SacosDetalles[archivo.name].descripcion;
+    } else {
+        precio = 22000;
+        descripcion = "Oversize";
+    }
+              }
+             if (categoria.includes ("pantalones/Palazos")) {
+                 const pantalonesDetalles = {
+                     "1.jpg": { precio: 18500, descripcion: "Darlon Frizado Elastizado T2a5"},
+                     "2.jpg": { precio: 18500, descripcion: "Darlon Frizado Elastizado T2a5"},
+                     "3.jpg": { precio: 17000, descripcion: "Darlon Talle 1 al 7"},
+                     "4.jpg": { precio: 17000, descripcion: "Darlon Talle 1 al 7"},
+                     "d1.jpg": { precio: 17000, descripcion: "Darlon Talle 2 y 4" },
+                     "d2.jpg": { precio: 17000, descripcion: "Darlon Talle 2 y 4" },
+                     "d3.jpg": { precio: 17000, descripcion: "Darlon Talle 2 y 4" },
+                     "d4.jpg": { precio: 17000, descripcion: "Darlon Talle 2 y 4" },
+                     "esp1.jpg": { precio: 22000, descripcion: "Palazo Darlon T esp 6 al 10"},
+                     "esp2.jpg": { precio: 22000, descripcion: "Palazo Darlon T esp 6 a 10"},
+                     "esp3.jpg": { precio: 22000, descripcion: "Palazo Darlon T esp 6 al 10"},
+                     "f1.jpg": { precio: 17000, descripcion: "Palazo Frizza T 1 al 5"},
+                     "f2.jpg": { precio: 17000, descripcion: "Palazo Frizza T 1 a 5"},
+                     "f3.jpg": { precio: 17000, descripcion: "Palazo Frizza T 1 al 5"},
+                     "3l.jpg": { precio: 18500, descripcion: "Palazo Darlon 3 Lineas T2al5"},
+                     "pd1.jpg": { precio: 17000, descripcion: "Palazo Darlon Piel Durazno T2al4"},
+                     "pd2.jpg": { precio: 17000, descripcion: "Palazo Darlon Piel Durazno T2al4"},
+                     "pd3.jpg": { precio: 17000, descripcion: "Palazo Darlon Piel Durazno T2al4"},
+                     "pd4.jpg": { precio: 17000, descripcion: "Palazo Darlon Piel Durazno T2al4"}
+                     
+                 };  
+                 if (pantalonesDetalles[archivo.name]) {
+                 precio = pantalonesDetalles[archivo.name].precio;
+                 descripcion = pantalonesDetalles[archivo.name].descripcion;
+             }
+                               }
+             if (categoria.includes ("pantalones/Cuerina")) {
+                 const pantalonesDetalles = {
+                     "cu1.jpg": { precio: 16000, descripcion: "Cuerina Talle 38 al 46"},
+                     "cu2.jpg": { precio: 16000, descripcion: "Cuerina Talle 38 al 46"},
+                     "engomado.jpg": { precio: 15500, descripcion: "Engomado Talle 2a5"},
+                     "engomado1.jpg": { precio: 15500, descripcion: "Engomado Talle 2a5"},
+                     "engomado2.jpg": { precio: 15500, descripcion: "Engomado Talle 2a5"}
+                 };
+                 
+                 if (pantalonesDetalles[archivo.name]) {
+                 precio = pantalonesDetalles[archivo.name].precio;
+                 descripcion = pantalonesDetalles[archivo.name].descripcion;
+             }
+             }
+            if (categoria.includes ("pantalones/Sastrero")) {
+                 const pantalonesDetalles = {
+                     "1.jpg": { precio: 18000, descripcion: "Talle 2a5"},
+                     "s1.jpg": { precio: 18000, descripcion: "Talle 2a5"},
+                     "s2.jpg": { precio: 18000, descripcion: "Talle 2a5"}
+                 };
+            
+             if (pantalonesDetalles[archivo.name]) {
+                 precio = pantalonesDetalles[archivo.name].precio;
+                 descripcion = pantalonesDetalles[archivo.name].descripcion;
+             }
+}
+
+            let imagenUrl = archivo.download_url.replace("api.github.com/repos", "raw.githubusercontent.com")
+                                                 .replace("/contents/", "/main/");
+
+            catalogo.innerHTML += `
+                <div class="item">
+                    <img src="${imagenUrl}" onclick="abrirModal('${imagenUrl}')">
+                    <p class="precio">$ ${precio.toLocaleString('es-AR')}</p>
+                    <p class="descripcion">${descripcion}</p>
+                </div>`;
+        });
+    } catch (error) {
+        console.error(error);
+        catalogo.innerHTML += `<p>Error al cargar imágenes.</p>`;
+    }
+}
+function volverAtras() {
+    if (categoriaActual.includes("Buzos-Camisetas")) {
+        cargarCatalogo("Buzos-Camisetas");
+    } else if (categoriaActual.includes("Frazadas-Mantas")) {
+        cargarCatalogo("Frazadas-Mantas");
+    } else if (categoriaActual.includes("Bufandas-Gorros")) {
+        cargarCatalogo("Bufandas-Gorros");
+    }
+    else {
+        cargarCatalogo(); // Si no está en una subcarpeta, carga el catálogo normal
+    }
+}
+
+function abrirModal(img) {
+    window.open(img, "_blank");
+}
+
+cargarCatalogo();
+
+</script>
+</html> 
              
